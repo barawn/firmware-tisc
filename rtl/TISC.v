@@ -187,10 +187,14 @@ module TISC(
 	wire tisc_ident_ack;
 	wire [31:0] tisc_ident_dat;
 						
-	wire [1:0] sel = {wbm_adr[18],wbm_adr[4]};
+	wire [1:0] sel = {wbm_adr[20],wbm_adr[6]};
 	wire [31:0] register_map[3:0];
 	wire [3:0] ack_map;
 	wire [3:0] stb_map;
+        // simplistic mapping: 0x000000 - 0x00003F : ident
+        //                     0x000040 - 0x00007F : gc_controller
+        //                     0x100000 - 0x1FFFFF : gb_master
+        // ident/gc_controller are shadowed through the rest of the space below gb_master.
 	assign stb_map[0] = (sel == 0);
 	assign register_map[0] = tisc_ident_dat;
 	assign ack_map[0] = tisc_ident_ack;
@@ -211,7 +215,7 @@ module TISC(
 	assign wbm_ack = ack_map[sel];
 	
 	glitcbus_master gb_master(.clk_i(wb_clk),.cyc_i(wbm_cyc),.stb_i(stb_map[2] || stb_map[3]),
-									.we_i(wbm_we), .adr_i(wbm_adr[15:0]),.dat_i(wbm_dat_in),.dat_o(gb_master_dat),
+									.we_i(wbm_we), .adr_i(wbm_adr[19:2]),.dat_i(wbm_dat_in),.dat_o(gb_master_dat),
 									.ack_o(gb_ack),
 									.GSEL_B(GSEL_B),
 									.GAD(GAD),
@@ -219,7 +223,7 @@ module TISC(
 									.GCLK(GCLK),
 									.gready_i(glitc_ready));
 	glitc_conf_controller gc_controller(.clk_i(wb_clk),.cyc_i(wbm_cyc),.stb_i(stb_map[1]),
-													.we_i(wbm_we), .adr_i(wbm_adr[3:0]),.dat_i(wbm_dat_in),
+													.we_i(wbm_we), .adr_i(wbm_adr[5:2]),.dat_i(wbm_dat_in),
 													.dat_o(gc_controller_dat),.ack_o(gc_controller_ack),
 													.gready_o(glitc_ready),
 													.PROGRAM_B(PROGRAM_B),
