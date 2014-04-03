@@ -56,17 +56,19 @@
 // module is provided for ad bus output enable Flip-Flops values
 module pci_io_mux_ad_en_crit
 (
-    ad_en_in,
+    mas_ad_en_in,
+	 tar_ad_en_in,
     pci_frame_in,
     pci_trdy_in,
     pci_stop_in,
     ad_en_out
 );
-input  ad_en_in,
+input  mas_ad_en_in,
+		 tar_ad_en_in,
        pci_frame_in,
        pci_trdy_in,
        pci_stop_in ;
 output ad_en_out ;
 
-assign ad_en_out = ad_en_in && ( ~pci_frame_in || (pci_trdy_in && pci_stop_in) ) ;
+assign ad_en_out = (mas_ad_en_in || tar_ad_en_in) && ( ~pci_frame_in || (pci_trdy_in && pci_stop_in) ) ;
 endmodule

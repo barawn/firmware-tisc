@@ -58,6 +58,9 @@
 
 // this module instantiates output flip flops for PCI interface and
 // some fanout downsizing logic because of heavily constrained PCI signals
+// PSA, 3/19/14:
+// *Complete* fanout downsizing, to relax timing as much as possible.
+// We're not resource constrained any more.
 
 // synopsys translate_off
 `include "timescale.v"
@@ -114,7 +117,6 @@ module pci_io_mux
     trdy_out,
     stop_out,
     cbe_out,
-	 ad_pad_out,
     ad_out,
     ad_load_out,
     ad_en_unregistered_out,
@@ -183,7 +185,6 @@ output          trdy_out ;
 output          stop_out ;
 output [3:0]    cbe_out ;
 output [31:0]   ad_out ;
-output [31:0] 	 ad_pad_out ;
 output          ad_load_out ;
 output          ad_en_unregistered_out ;
 
@@ -212,495 +213,67 @@ input           init_complete_in    ;
 wire   [31:0]   temp_ad = tar_ad_en_reg_in ? tar_ad_in : mas_ad_in ;
 
 (* KEEP = "TRUE" *)
-wire [31:0] ad_en_ctrl ;
+wire [31:0] ad_en_ctrl;
 
-(* KEEP = "TRUE" *)
-wire [31:0] ad_enable_internal = mas_ad_en_in || tar_ad_en_in ;
-
-// Let's try duplicating these.
-
-pci_io_mux_ad_en_crit ad_en_low_gen
+pci_io_mux_ad_en_crit ad_en_unregistered_gen
 (
-    .ad_en_in       (ad_enable_internal),
+    .mas_ad_en_in   (mas_ad_en_in),
+	 .tar_ad_en_in	  (tar_ad_en_in),
     .pci_frame_in   (pci_frame_in),
     .pci_trdy_in    (pci_trdy_in),
     .pci_stop_in    (pci_stop_in),
-    .ad_en_out      (ad_en_ctrl_low)
+    .ad_en_out      (ad_en_unregistered_out)
 );
-
-pci_io_mux_ad_en_crit ad_en_mlow_gen
-(
-    .ad_en_in       (ad_enable_internal),
-    .pci_frame_in   (pci_frame_in),
-    .pci_trdy_in    (pci_trdy_in),
-    .pci_stop_in    (pci_stop_in),
-    .ad_en_out      (ad_en_ctrl_mlow)
-);
-
-pci_io_mux_ad_en_crit ad_en_mhigh_gen
-(
-    .ad_en_in       (ad_enable_internal),
-    .pci_frame_in   (pci_frame_in),
-    .pci_trdy_in    (pci_trdy_in),
-    .pci_stop_in    (pci_stop_in),
-    .ad_en_out      (ad_en_ctrl_mhigh)
-);
-
-pci_io_mux_ad_en_crit ad_en_high_gen
-(
-    .ad_en_in       (ad_enable_internal),
-    .pci_frame_in   (pci_frame_in),
-    .pci_trdy_in    (pci_trdy_in),
-    .pci_stop_in    (pci_stop_in),
-    .ad_en_out      (ad_en_ctrl_high)
-);
-
-assign ad_en_unregistered_out = ad_en_ctrl_high ;
 
 wire load = master_load_in || target_load_in ;
 wire load_on_transfer = master_load_on_transfer_in || target_load_on_transfer_in ;
 
-wire   ad_load_ctrl_low ;
-wire   ad_load_ctrl_mlow ;
-wire   ad_load_ctrl_mhigh ;
-wire   ad_load_ctrl_high ;
+(* KEEP = "TRUE" *)
+wire [31:0] ad_load_ctrl;
 
-assign ad_load_out = ad_load_ctrl_high ;
-
-pci_io_mux_ad_load_crit ad_load_low_gen
+pci_io_mux_ad_load_crit ad_load_out_gen
 (
     .load_in(load),
     .load_on_transfer_in(load_on_transfer),
     .pci_irdy_in(pci_irdy_in),
     .pci_trdy_in(pci_trdy_in),
-    .load_out(ad_load_ctrl_low)
+    .load_out(ad_load_out)
 );
 
-pci_io_mux_ad_load_crit ad_load_mlow_gen
-(
-    .load_in(load),
-    .load_on_transfer_in(load_on_transfer),
-    .pci_irdy_in(pci_irdy_in),
-    .pci_trdy_in(pci_trdy_in),
-    .load_out(ad_load_ctrl_mlow)
-);
-
-pci_io_mux_ad_load_crit ad_load_mhigh_gen
-(
-    .load_in(load),
-    .load_on_transfer_in(load_on_transfer),
-    .pci_irdy_in(pci_irdy_in),
-    .pci_trdy_in(pci_trdy_in),
-    .load_out(ad_load_ctrl_mhigh)
-);
-
-pci_io_mux_ad_load_crit ad_load_high_gen
-(
-    .load_in(load),
-    .load_on_transfer_in(load_on_transfer),
-    .pci_irdy_in(pci_irdy_in),
-    .pci_trdy_in(pci_trdy_in),
-    .load_out(ad_load_ctrl_high)
-);
-
-generate
+generate	
 	genvar i;
-	for (i=0;i<32;i=i+1) begin : AD
+	for (i=0;i<32;i=i+1) begin : IOB
 		pci_io_mux_ad_en_crit ad_en_gen
 		(
-			 .ad_en_in       (ad_enable_internal[i]),
+			 .mas_ad_en_in		  (mas_ad_en_in),
+			 .tar_ad_en_in		  (tar_ad_en_in),
 			 .pci_frame_in   (pci_frame_in),
 			 .pci_trdy_in    (pci_trdy_in),
 			 .pci_stop_in    (pci_stop_in),
 			 .ad_en_out      (ad_en_ctrl[i])
 		);
+		pci_io_mux_ad_load_crit ad_load_out_gen
+		(
+			 .load_in(load),
+			 .load_on_transfer_in(load_on_transfer),
+			 .pci_irdy_in(pci_irdy_in),
+			 .pci_trdy_in(pci_trdy_in),
+			 .load_out(ad_load_ctrl[i])
+		);
 		pci_out_reg ad_iob
 		(
-		 .reset_in     ( reset_in ),
-		 .clk_in       ( clk_in) ,
-		 .dat_en_in    ( ad_load_ctrl_low ),
-		 .en_en_in     ( 1'b1 ),
-		 .dat_in       ( temp_ad[i] ) ,
-		 .en_in        ( ad_en_ctrl[i] ) ,
-		 .en_out       ( ad_en_out[i] ),
-		 .dat_out      ( ad_out[i] ),
-		 .dat_pad_out	( ad_pad_out[i] )
+			 .reset_in     ( reset_in ),
+			 .clk_in       ( clk_in) ,
+			 .dat_en_in    ( ad_load_ctrl[i] ),
+			 .en_en_in     ( 1'b1 ),
+			 .dat_in       ( temp_ad[i] ) ,
+			 .en_in        ( ad_en_ctrl[i] ) ,
+			 .en_out       ( ad_en_out[i] ),
+			 .dat_out      ( ad_out[i] )
 		);
 	end
 endgenerate
-/*
-pci_out_reg ad_iob1
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[1] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[1] ),
-    .dat_out      ( ad_out[1] )
-);
 
-pci_out_reg ad_iob2
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[2] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[2] ),
-    .dat_out      ( ad_out[2] )
-);
-
-pci_out_reg ad_iob3
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[3] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[3] ),
-    .dat_out      ( ad_out[3] )
-);
-
-pci_out_reg ad_iob4
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[4] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[4] ),
-    .dat_out      ( ad_out[4] )
-);
-
-pci_out_reg ad_iob5
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[5] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[5] ),
-    .dat_out      ( ad_out[5] )
-);
-
-pci_out_reg ad_iob6
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[6] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[6] ),
-    .dat_out      ( ad_out[6] )
-);
-
-pci_out_reg ad_iob7
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_low ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[7] ) ,
-    .en_in        ( ad_en_ctrl_low ) ,
-    .en_out       ( ad_en_out[7] ),
-    .dat_out      ( ad_out[7] )
-);
-
-pci_out_reg ad_iob8
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[8] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[8] ),
-    .dat_out      ( ad_out[8] )
-);
-
-pci_out_reg ad_iob9
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[9] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[9] ),
-    .dat_out      ( ad_out[9] )
-);
-
-pci_out_reg ad_iob10
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[10] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[10] ),
-    .dat_out      ( ad_out[10] )
-);
-
-pci_out_reg ad_iob11
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[11] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[11] ),
-    .dat_out      ( ad_out[11] )
-);
-
-pci_out_reg ad_iob12
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[12] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[12] ),
-    .dat_out      ( ad_out[12] )
-);
-
-pci_out_reg ad_iob13
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[13] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[13] ),
-    .dat_out      ( ad_out[13] )
-);
-
-pci_out_reg ad_iob14
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[14] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[14] ),
-    .dat_out      ( ad_out[14] )
-);
-
-pci_out_reg ad_iob15
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mlow ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[15] ) ,
-    .en_in        ( ad_en_ctrl_mlow ) ,
-    .en_out       ( ad_en_out[15] ),
-    .dat_out      ( ad_out[15] )
-);
-
-pci_out_reg ad_iob16
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[16] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[16] ),
-    .dat_out      ( ad_out[16] )
-);
-
-pci_out_reg ad_iob17
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[17] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[17] ),
-    .dat_out      ( ad_out[17] )
-);
-
-pci_out_reg ad_iob18
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[18] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[18] ),
-    .dat_out      ( ad_out[18] )
-);
-
-pci_out_reg ad_iob19
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[19] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[19] ),
-    .dat_out      ( ad_out[19] )
-);
-
-pci_out_reg ad_iob20
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[20] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[20] ),
-    .dat_out      ( ad_out[20] )
-);
-
-pci_out_reg ad_iob21
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[21] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[21] ),
-    .dat_out      ( ad_out[21] )
-);
-
-pci_out_reg ad_iob22
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[22] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[22] ),
-    .dat_out      ( ad_out[22] )
-);
-
-pci_out_reg ad_iob23
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_mhigh ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[23] ) ,
-    .en_in        ( ad_en_ctrl_mhigh ) ,
-    .en_out       ( ad_en_out[23] ),
-    .dat_out      ( ad_out[23] )
-);
-
-pci_out_reg ad_iob24
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[24] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[24] ),
-    .dat_out      ( ad_out[24] )
-);
-
-pci_out_reg ad_iob25
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[25] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[25] ),
-    .dat_out      ( ad_out[25] )
-);
-
-pci_out_reg ad_iob26
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[26] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[26] ),
-    .dat_out      ( ad_out[26] )
-);
-
-pci_out_reg ad_iob27
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[27] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[27] ),
-    .dat_out      ( ad_out[27] )
-);
-
-pci_out_reg ad_iob28
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[28] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[28] ),
-    .dat_out      ( ad_out[28] )
-);
-
-pci_out_reg ad_iob29
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[29] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[29] ),
-    .dat_out      ( ad_out[29] )
-);
-
-pci_out_reg ad_iob30
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[30] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[30] ),
-    .dat_out      ( ad_out[30] )
-);
-
-pci_out_reg ad_iob31
-(
-    .reset_in     ( reset_in ),
-    .clk_in       ( clk_in) ,
-    .dat_en_in    ( ad_load_ctrl_high ),
-    .en_en_in     ( 1'b1 ),
-    .dat_in       ( temp_ad[31] ) ,
-    .en_in        ( ad_en_ctrl_high ) ,
-    .en_out       ( ad_en_out[31] ),
-    .dat_out      ( ad_out[31] )
-);
-*/
 wire [3:0] cbe_load_ctrl = {4{ master_load_in }} ;
 wire [3:0] cbe_en_ctrl   = {4{ cbe_en_in }} ;
 

@@ -107,15 +107,15 @@
 `define FPGA
 `define XILINX
 
-//`define WB_RAM_DONT_SHARE
-//`define PCI_RAM_DONT_SHARE
+`define WB_RAM_DONT_SHARE
+`define PCI_RAM_DONT_SHARE
 
 `ifdef FPGA
     `ifdef XILINX
         `define PCI_FIFO_RAM_ADDR_LENGTH 8      // PCI target unit fifo storage definition
         `define WB_FIFO_RAM_ADDR_LENGTH 8       // WB slave unit fifo storage definition
 //        `define PCI_XILINX_RAMB4
-//       `define WB_XILINX_RAMB4
+//        `define WB_XILINX_RAMB4
         //`define PCI_XILINX_DIST_RAM
         //`define WB_XILINX_DIST_RAM
     `endif
