@@ -162,7 +162,8 @@ module glitcbus_master(
 	endgenerate
 	assign GSEL_B = gsel_out;
 	assign GRDWR_B = grdwr_b_out;
-	assign GCLK = 0;
+	// forward clk_i
+	ODDR2 #(.INIT(0)) u_clk_forward(.D0(1'b1),.D1(1'b0),.C0(clk_i),.C1(~clk_i),.CE(1'b1),.R(1'b0),.S(1'b0),.Q(GCLK));
 	assign ack_o = ack;
 	assign dat_o = data_out;
 endmodule
