@@ -111,43 +111,43 @@ module glitcbus_master(
 	reg ack = 0;
 	
 	always @(posedge clk_i) begin
-		gad_q <= GAD;
+		#1 gad_q <= GAD;
 	end
 	always @(posedge clk_i) begin
-		if (state == GB_ADDRESS) gad_out <= adr_i[15:8];
-		else if (state == GB_ADDRESS2) gad_out <= adr_i[7:0];
-		else if (state == CONFIG_WRITE_BYTE) gad_out <= dat_i[7:0];
-		else if (state == GB_BYTE3) gad_out <= dat_i[31:24];
-		else if (state == GB_BYTE2) gad_out <= dat_i[23:16];
-		else if (state == GB_BYTE1) gad_out <= dat_i[15:8];
-		else if (state == GB_BYTE0) gad_out <= dat_i[7:0];
+		if (state == GB_ADDRESS) #1 gad_out <= adr_i[15:8];
+		else if (state == GB_ADDRESS2) #1 gad_out <= adr_i[7:0];
+		else if (state == CONFIG_WRITE_BYTE) #1 gad_out <= dat_i[7:0];
+		else if (state == GB_BYTE3) #1 gad_out <= dat_i[31:24];
+		else if (state == GB_BYTE2) #1 gad_out <= dat_i[23:16];
+		else if (state == GB_BYTE1) #1 gad_out <= dat_i[15:8];
+		else if (state == GB_BYTE0) #1 gad_out <= dat_i[7:0];
 	end
 	always @(posedge clk_i) begin
 		if ((state == GB_WAIT && !we_i) 
 		 || (state == CONFIG_WRITE_BYTE) 
 		 || (state == GB_DONE) 
-		 || (state == IDLE)) gad_oe_b <= {8{1'b1}};
-		else if (state == GB_ADDRESS || state == CONFIG_RDWR_B) gad_oe_b <= {8{1'b0}};
+		 || (state == IDLE)) #1 gad_oe_b <= {8{1'b1}};
+		else if (state == GB_ADDRESS || state == CONFIG_RDWR_B) #1 gad_oe_b <= {8{1'b0}};
 	end
 	always @(posedge clk_i) begin
-		if (state == GB_SEL || state == CONFIG_WRITE_BYTE) gsel_out[adr_i[17:16]] <= 0;
+		if (state == GB_SEL || state == CONFIG_WRITE_BYTE) #1 gsel_out[adr_i[17:16]] <= 0;
 		else if ((state == GB_DONE && we_i)
 				|| (!we_i && state == GB_BYTE1)
-				|| state == CONFIG_WRITE_BYTE_DONE || state == IDLE) gsel_out <= 4'hF;
+				|| state == CONFIG_WRITE_BYTE_DONE || state == IDLE) #1 gsel_out <= 4'hF;
 	end
 	always @(posedge clk_i) begin
 		if (state == CONFIG_RDWR_B || (state == GB_ADDRESS && we_i) ||
 			 state == GB_BYTE3)
-			grdwr_b_out <= 0;
+			#1 grdwr_b_out <= 0;
 		else if (state == GB_DONE || state == IDLE)
-			grdwr_b_out <= 1;
+			#1 grdwr_b_out <= 1;
 	end
 	always @(posedge clk_i) begin
 		if (!we_i) begin
-			if (state == GB_BYTE3) data_out[31:24] <= gad_q;
-			if (state == GB_BYTE2) data_out[23:16] <= gad_q;
-			if (state == GB_BYTE1) data_out[15:8] <= gad_q;
-			if (state == GB_BYTE0) data_out[7:0] <= gad_q;
+			if (state == GB_BYTE3) #1 data_out[31:24] <= gad_q;
+			if (state == GB_BYTE2) #1 data_out[23:16] <= gad_q;
+			if (state == GB_BYTE1) #1 data_out[15:8] <= gad_q;
+			if (state == GB_BYTE0) #1 data_out[7:0] <= gad_q;
 		end
 	end
 	always @(posedge clk_i) begin
