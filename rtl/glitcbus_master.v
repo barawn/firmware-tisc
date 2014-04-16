@@ -126,8 +126,8 @@ module glitcbus_master(
 		if ((state == GB_WAIT && !we_i) 
 		 || (state == CONFIG_WRITE_BYTE) 
 		 || (state == GB_DONE) 
-		 || (state == IDLE)) gad_oe_b <= {8{1'b0}};
-		else if (state == GB_ADDRESS || state == CONFIG_RDWR_B) gad_oe_b <= {8{1'b1}};
+		 || (state == IDLE)) gad_oe_b <= {8{1'b1}};
+		else if (state == GB_ADDRESS || state == CONFIG_RDWR_B) gad_oe_b <= {8{1'b0}};
 	end
 	always @(posedge clk_i) begin
 		if (state == GB_SEL || state == CONFIG_WRITE_BYTE) gsel_out[adr_i[17:16]] <= 0;
