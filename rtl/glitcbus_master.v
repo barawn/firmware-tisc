@@ -105,7 +105,7 @@ module glitcbus_master(
 	(* IOB = "TRUE" *)
 	reg [7:0] gad_oe_b = {8{1'b1}};
 	(* IOB = "TRUE" *)
-	reg grdwr_b_out = 0;
+	reg grdwr_b_out = 1;
 	reg [15:0] address_out = {16{1'b0}};
 	reg [31:0] data_out = {32{1'b0}};
 	reg ack = 0;
@@ -138,9 +138,9 @@ module glitcbus_master(
 	always @(posedge clk_i) begin
 		if (state == CONFIG_RDWR_B || (state == GB_ADDRESS && we_i) ||
 			 state == GB_BYTE3)
-			grdwr_b_out <= 1;
-		else if (state == GB_DONE || state == IDLE)
 			grdwr_b_out <= 0;
+		else if (state == GB_DONE || state == IDLE)
+			grdwr_b_out <= 1;
 	end
 	always @(posedge clk_i) begin
 		if (!we_i) begin
