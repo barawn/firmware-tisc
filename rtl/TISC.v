@@ -28,8 +28,10 @@ module TISC(
 		input [3:0] INIT_B,
 		input [3:0] DONE
     );
-
-	localparam [31:0] CPCI_IDENT = "TISC";
+	 
+	// Identifier. This is just the readout of register 0.
+	// We don't have a firmware version yet, will add that later.
+	localparam [31:0] CPCI_IDENT = "TSC1";
 
 	// Tristates. Default is active low OE, which is what the IOBUFs take.
 `define PCI_TRIS( x ) \
