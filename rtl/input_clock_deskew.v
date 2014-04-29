@@ -9,7 +9,6 @@ module input_clock_deskew(
 	parameter DEVICE = "7SERIES";
 	parameter DIFF_PAIR = "TRUE";
 	parameter DIFF_OUT = "TRUE";
-
 	wire I_buffered;
 	generate
 		if (DIFF_PAIR == "TRUE") begin : DIFF_PAIR
@@ -18,7 +17,8 @@ module input_clock_deskew(
 			IBUFG i_ibufg(.I(I),.O(I_buffered));
 		end
 	endgenerate
-	
+	assign O = I_buffered;
+	/*
 	generate
 		if (DEVICE == "7SERIES") begin : MMCME2
 			wire I_feedback_out;
@@ -48,5 +48,5 @@ module input_clock_deskew(
 			end
 		end
 	endgenerate
-											
+	*/
 endmodule
