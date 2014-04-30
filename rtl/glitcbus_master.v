@@ -1,3 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////
+// This file is a part of the Antarctic Impulsive Transient Antenna (ANITA)
+// project, a collaborative scientific effort between multiple institutions. For
+// more information, contact Peter Gorham (gorham@phys.hawaii.edu).
+//
+// All rights reserved.
+//
+// Author: Patrick Allison, Ohio State University (allison.122@osu.edu)
+// Author:
+// Author:
+////////////////////////////////////////////////////////////////////////////////
+
 `timescale 1ns / 1ps
 // Quad GLITCBUS master. This module also handles the programming interface as well.
 // There's a separate module (in the TISC address space) which handle the programming
@@ -12,22 +24,16 @@
 // It then watches for DONE being asserted, and sets gready_i[N] to 1.
 //
 //
+`include "wishbone.vh"
 module glitcbus_master(
 		input [3:0] gready_i,
 		output [3:0] GSEL_B,
 		inout [7:0] GAD,
 		output GRDWR_B,
 		output GCLK,
-
 		input clk_i,
-		input cyc_i,
-		input stb_i,
-		input we_i,
-		input [17:0] adr_i,
-		input [31:0] dat_i,
-		output [31:0] dat_o,
-		output ack_o
-    );
+		`WBS_NAMED_BARE_PORT(32, 20, 4)
+		);
 
 	// Bits [16:15] select which GLITC we're talking to.
 	// If "gready_i" for that GLITC is 0, then we treat it as a configuration
@@ -166,4 +172,6 @@ module glitcbus_master(
 	ODDR2 #(.INIT(0)) u_clk_forward(.D0(1'b1),.D1(1'b0),.C0(clk_i),.C1(~clk_i),.CE(1'b1),.R(1'b0),.S(1'b0),.Q(GCLK));
 	assign ack_o = ack;
 	assign dat_o = data_out;
+	assign err_o = 0;
+	assign rty_o = 0;
 endmodule

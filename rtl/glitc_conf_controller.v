@@ -1,3 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////
+// This file is a part of the Antarctic Impulsive Transient Antenna (ANITA)
+// project, a collaborative scientific effort between multiple institutions. For
+// more information, contact Peter Gorham (gorham@phys.hawaii.edu).
+//
+// All rights reserved.
+//
+// Author: Patrick Allison, Ohio State University (allison.122@osu.edu)
+// Author:
+// Author:
+////////////////////////////////////////////////////////////////////////////////
+
 `timescale 1ns / 1ps
 //
 // Programming procedure:
@@ -5,18 +17,13 @@
 // 2) Wait for that bit to be cleared and the INIT bit (bit 8 to bit 11) to be set.
 // 3) Program via the GLITCBUS interface.
 // 4) Wait for DONE to go high.
+`include "wishbone.vh"
 module glitc_conf_controller(
 		input clk_i,
-		input cyc_i,
-		input stb_i,
-		input we_i,
-		input [3:0] adr_i,
-		input [31:0] dat_i,
-		output [31:0] dat_o,
-		output ack_o,
+		`WBS_NAMED_BARE_PORT(32, 5, 4),
 		output [3:0] gready_o,
 		output [3:0] PROGRAM_B,
-		output [3:0] INIT_B,
+		input [3:0] INIT_B,
 		input [3:0] DONE
     );
 
@@ -51,6 +58,8 @@ module glitc_conf_controller(
 	end
 	assign dat_o = {{12{1'b0}},{4{1'b0}},done_seen,{4{1'b0}},init_seen,{4{1'b0}},prog_request};
 	assign ack_o = cyc_i && stb_i;
+	assign rty_o = 0;
+	assign err_o = 0;
 	assign gready_o = done_seen;
 	assign PROGRAM_B = ~program;
 	

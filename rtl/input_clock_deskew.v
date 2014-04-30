@@ -1,3 +1,16 @@
+////////////////////////////////////////////////////////////////////////////////
+// This file is a part of the Antarctic Impulsive Transient Antenna (ANITA)
+// project, a collaborative scientific effort between multiple institutions. For
+// more information, contact Peter Gorham (gorham@phys.hawaii.edu).
+//
+// All rights reserved.
+//
+// Author: Patrick Allison, Ohio State University (allison.122@osu.edu)
+// Author:
+// Author:
+////////////////////////////////////////////////////////////////////////////////
+
+// Deskew input clock, but no longer needed.
 `timescale 1ns / 1ps
 module input_clock_deskew(
 		input I,

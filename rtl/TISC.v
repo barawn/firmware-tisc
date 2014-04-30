@@ -1,4 +1,17 @@
+////////////////////////////////////////////////////////////////////////////////
+// This file is a part of the Antarctic Impulsive Transient Antenna (ANITA)
+// project, a collaborative scientific effort between multiple institutions. For
+// more information, contact Peter Gorham (gorham@phys.hawaii.edu).
+//
+// All rights reserved.
+//
+// Author: Patrick Allison, Ohio State University (allison.122@osu.edu)
+// Author:
+// Author:
+////////////////////////////////////////////////////////////////////////////////
 `timescale 1ns / 1ps
+`include "wishbone.vh"
+`include "pci.vh"
 module TISC(
 		// CompactPCI control signals.
 		input pci_clk,
@@ -26,38 +39,29 @@ module TISC(
 		// Programming
 		output [3:0] PROGRAM_B,
 		input [3:0] INIT_B,
-		input [3:0] DONE
+		input [3:0] DONE,
+		// JTAG
+		output GSEL_JTAG_B
     );
 	 
+	 
+	assign GSEL_JTAG_B = 1;
 	// Identifier. This is just the readout of register 0.
 	// We don't have a firmware version yet, will add that later.
 	localparam [31:0] CPCI_IDENT = "TSC1";
 
-	// Tristates. Default is active low OE, which is what the IOBUFs take.
-`define PCI_TRIS( x ) \
- 	wire x``_i;							\
-	wire x``_o;							\
-	wire x``_oe ;						\
-	IOBUF x``_iobuf (.IO( x ), .I( x``_o ), .O( x``_i ), .T( x``_oe) ); \
-	wire x``_debug = x``_oe ? x``_i : x``_o
-	
-
-
-	// Tristate bus. The 'dummy' debug is to end on a ';'-statement.
-`define PCI_TRIS_BUS( x , y ) \
-	wire [ y - 1 : 0 ] x``_i;	\
-	wire [ y - 1 : 0 ] x``_o;  \
-	wire [ y - 1 : 0 ] x``_oe; \
-	wire [ y - 1 : 0 ] x``_debug; \
-	wire [ y - 1 : 0 ] x``_debug_dup; \
-	generate							\
-		genvar x``_iter;			\
-		for ( x``_iter = 0 ; x``_iter < y ; x``_iter = x``_iter + 1 ) begin : x``_IOBUF_LOOP \
-			IOBUF x``_iobuf(.IO( x [ x``_iter ] ), .I( x``_o[ x``_iter ]), .O( x``_i [ x``_iter ] ),  .T( x``_oe [ x``_iter ] )); \
-			assign x``_debug_dup = ( x``_oe[ x``_iter ] ) ? x``_i [ x``_iter ] : x``_o [ x``_iter ] ;  \
-		end							\
-	endgenerate 					\
-	assign x``_debug = x``_debug_dup	
+	// WISHBONE master busses.
+	`WB_DEFINE(pcic, 32, 21, 4);
+	`WB_DEFINE(wbvio, 32, 21, 4);
+	`WB_DEFINE(i2cc, 32, 21, 4);
+	// WISHBONE slave busses.
+	`WB_DEFINE(gbm, 32, 20, 4);
+	`WB_DEFINE(gcc, 32, 5, 4);
+	`WB_DEFINE(tisc, 32, 5, 4);
+	`WB_DEFINE(pcid, 32, 32, 4);
+	// Kill the unused bus.
+	`WB_KILL(pcid, 32, 32, 4);
+	`WB_KILL(i2cc, 32, 21, 4);
 	
 	`PCI_TRIS(pci_rst);
 	`PCI_TRIS(pci_inta);
@@ -70,179 +74,143 @@ module TISC(
 	`PCI_TRIS(pci_par);
 	`PCI_TRIS(pci_perr);
 	`PCI_TRIS(pci_serr);
-	`PCI_TRIS_BUS(pci_ad, 32);
-	`PCI_TRIS_BUS(pci_cbe, 4);
-//	`PCI_TRIS(spoci_scl);
-//	`PCI_TRIS(spoci_sda);
-`define PCI_TRIS_MAP(x)		\
-	.``x``_i  ( ``x``_i ),	\
-	.``x``_o  ( ``x``_o ),	\
-	.``x``_oe_o ( ``x``_oe )
+	`PCI_TRIS_VECTOR(pci_ad, 32);
+	`PCI_TRIS_VECTOR(pci_cbe, 4);	
+	
 
 	// Common WISHBONE.
 	wire wb_clk;
 	wire wb_rst_in;
 	wire wb_rst_out;
 	wire wb_int_in;
-	wire wb_int_out;
-	// WISHBONE -> PCI
-	wire [31:0] wbs_adr;
-	wire [31:0] wbs_dat_out;
-	wire [31:0] wbs_dat_in;
-	wire [3:0] wbs_sel;
-	wire wbs_cyc;
-	wire wbs_stb;
-	wire wbs_we;
-	wire [2:0] wbs_cti;
-	wire [1:0] wbs_bte;
-	wire wbs_ack;
-	wire wbs_rty;
-	wire wbs_err;
-	
-	// PCI -> WISHBONE
-	wire [31:0] wbm_adr;
-	wire [31:0] wbm_dat_out;
-	wire [31:0] wbm_dat_in;
-	wire [3:0] wbm_sel;
-	wire wbm_cyc;
-	wire wbm_we;
-	wire [2:0] wbm_cti;
-	wire [1:0] wbm_bte;
-	wire wbm_ack;
-	wire wbm_rty;
-	wire wbm_err;
+	wire wb_int_out = 0;
 
 	wire clk_i;
 	input_clock_deskew #(.DEVICE("SPARTAN6"),.DIFF_PAIR("FALSE"),.DIFF_OUT("FALSE"))
 			u_pci_clock_deskew(.I(pci_clk),.O(clk_i));
 	assign wb_clk = clk_i;
+
+	pci_bridge32 u_pci(	.pci_clk_i(clk_i),
+								`PCI_TRIS_CONNECT(pci_rst),
+								.pci_req_o(pci_req_o),
+								.pci_req_oe_o(pci_req_oe),
+								.pci_gnt_i(pci_gnt),
+								`PCI_TRIS_CONNECT(pci_inta),
+								`PCI_TRIS_CONNECT(pci_frame),
+								`PCI_TRIS_CONNECT(pci_irdy),
+								.pci_idsel_i(pci_idsel),
+								`PCI_TRIS_CONNECT(pci_devsel),
+								`PCI_TRIS_CONNECT(pci_trdy),
+								`PCI_TRIS_CONNECT(pci_stop),
+								`PCI_TRIS_CONNECT(pci_ad),
+								`PCI_TRIS_CONNECT(pci_cbe),
+								`PCI_TRIS_CONNECT(pci_par),
+								`PCI_TRIS_CONNECT(pci_perr),
+								.pci_serr_o(pci_serr_o),
+								.pci_serr_oe_o(pci_serr_oe),
+
+								.wb_clk_i(wb_clk),
+								.wb_rst_o(wb_rst_in),
+								.wb_rst_i(wb_rst_out),
+								.wb_int_o(wb_int_in),
+								.wb_int_i(wb_int_out),
+
+								`WBM_CONNECT(pcic, wbm),
+								`WBS_CONNECT(pcid, wbs)
+								// .wbm_cti_o(wbm_cti),
+								// .wbm_bte_o(wbm_bte)
+	);
 	
-	pci_bridge32 u_pci(.pci_clk_i(clk_i),
-							`PCI_TRIS_MAP(pci_rst),
-							.pci_req_o(pci_req_o),
-							.pci_req_oe_o(pci_req_oe),
-							.pci_gnt_i(pci_gnt),
-							`PCI_TRIS_MAP(pci_inta),
-							`PCI_TRIS_MAP(pci_frame),
-							`PCI_TRIS_MAP(pci_irdy),
-							.pci_idsel_i(pci_idsel),
-							`PCI_TRIS_MAP(pci_devsel),
-							`PCI_TRIS_MAP(pci_trdy),
-							`PCI_TRIS_MAP(pci_stop),
-							`PCI_TRIS_MAP(pci_ad),
-							`PCI_TRIS_MAP(pci_cbe),
-							`PCI_TRIS_MAP(pci_par),
-							`PCI_TRIS_MAP(pci_perr),
-							.pci_serr_o(pci_serr_o),
-							.pci_serr_oe_o(pci_serr_oe),
-							
-							.wb_clk_i(wb_clk),
-							.wb_rst_o(wb_rst_in),
-							.wb_rst_i(wb_rst_out),
-							.wb_int_o(wb_int_in),
-							.wb_int_i(wb_int_out),
-							
-							.wbs_adr_i(wbs_adr),
-							.wbs_dat_i(wbs_dat_out),
-							.wbs_dat_o(wbs_dat_in),
-							.wbs_sel_i(wbs_sel),
-							.wbs_cyc_i(wbs_cyc),
-							.wbs_stb_i(wbs_stb),
-							.wbs_we_i(wbs_we),
-							.wbs_cti_i(wbs_cti),
-							.wbs_bte_i(wbs_bte),
-							.wbs_ack_o(wbs_ack),
-							.wbs_rty_o(wbs_rty),
-							.wbs_err_o(wbs_err),
-							
-							.wbm_adr_o(wbm_adr),
-							.wbm_dat_i(wbm_dat_out),
-							.wbm_dat_o(wbm_dat_in),
-							.wbm_sel_o(wbm_sel),
-							.wbm_cyc_o(wbm_cyc),
-							.wbm_stb_o(wbm_stb),
-							.wbm_we_o(wbm_we),
-							.wbm_cti_o(wbm_cti),
-							.wbm_bte_o(wbm_bte),
-							.wbm_ack_i(wbm_ack),
-							.wbm_rty_i(wbm_rty),
-							.wbm_err_i(wbm_err));
-	// Kill the WISHBONE slave interface.
-	assign wbs_cyc = 0;
-	assign wbs_stb = 0;
-	assign wbs_cti = 0;
-	assign wbs_bte = 0;
-	assign wb_rst_out = 0;
-	assign wb_int_out = 0;
-	assign wbs_dat_out = 0;
-	assign wbs_adr = 0;
-	assign wbs_we = 0;
+	wire [70:0] wbc_debug;
+	tisc_intercon u_intercon(.clk_i(wb_clk),.rst_i(1'b0),
+									 `WBS_CONNECT(pcic, pcic),
+									 `WBS_CONNECT(wbvio, wbvio),
+									 `WBS_CONNECT(i2cc, i2cc),
+									 `WBM_CONNECT(gbm, gbm),
+									 `WBM_CONNECT(gcc, gcc),
+									 `WBM_CONNECT(tisc, tisc),
+									 .debug_o(wbc_debug));	
 	
-	wire gb_master_stb;
-	wire gb_master_ack;
-	wire [31:0] gb_master_dat;
-	
-	wire gc_controller_stb;
-	wire gc_controller_ack;
-	wire [31:0] gc_controller_dat;
-	wire tisc_ident_stb;
-	wire tisc_ident_ack;
-	wire [31:0] tisc_ident_dat;
-						
-	wire [1:0] sel = {wbm_adr[20],wbm_adr[6]};
-	wire [31:0] register_map[3:0];
-	wire [3:0] ack_map;
-	wire [3:0] stb_map;
-        // simplistic mapping: 0x000000 - 0x00003F : ident
-        //                     0x000040 - 0x00007F : gc_controller
-        //                     0x100000 - 0x1FFFFF : gb_master
-        // ident/gc_controller are shadowed through the rest of the space below gb_master.
-	assign stb_map[0] = (sel == 0);
-	assign register_map[0] = tisc_ident_dat;
-	assign ack_map[0] = tisc_ident_ack;
-	
-	assign stb_map[1] = (sel == 1);
-	assign register_map[1] = gc_controller_dat;
-	assign ack_map[1] = gc_controller_ack;
-	
-	assign stb_map[2] = (sel == 2);
-	assign register_map[2] = gb_master_dat;
-	assign ack_map[2] = gb_master_ack;
-	
-	assign stb_map[3] = (sel == 3);
-	assign register_map[2] = gb_master_dat;
-	assign ack_map[2] = gb_master_ack;
-	
-	assign wbm_dat_out = register_map[sel];
-	assign wbm_ack = ack_map[sel];
-	
-	glitcbus_master gb_master(.clk_i(wb_clk),.cyc_i(wbm_cyc),.stb_i(stb_map[2] || stb_map[3]),
-									.we_i(wbm_we), .adr_i(wbm_adr[19:2]),.dat_i(wbm_dat_in),.dat_o(gb_master_dat),
-									.ack_o(gb_ack),
+	glitcbus_master gb_master(.clk_i(wb_clk),
+									`WBS_BARE_CONNECT(gbm),
 									.GSEL_B(GSEL_B),
 									.GAD(GAD),
 									.GRDWR_B(GRDWR_B),
 									.GCLK(GCLK),
 									.gready_i(glitc_ready));
-	glitc_conf_controller gc_controller(.clk_i(wb_clk),.cyc_i(wbm_cyc),.stb_i(stb_map[1]),
-													.we_i(wbm_we), .adr_i(wbm_adr[5:2]),.dat_i(wbm_dat_in),
-													.dat_o(gc_controller_dat),.ack_o(gc_controller_ack),
+	glitc_conf_controller gc_controller(.clk_i(wb_clk),
+													`WBS_BARE_CONNECT(gcc),
 													.gready_o(glitc_ready),
 													.PROGRAM_B(PROGRAM_B),
 													.INIT_B(INIT_B),
 													.DONE(DONE));
-	tisc_identification tisc_ident(.cyc_i(wbm_cyc), .stb_i(stb_map[0]),.dat_o(tisc_ident_dat),.ack_o(tisc_ident_ack));
-	wire [35:0] ila_control;
-	wire [7:0] ila_debug = {{5{1'b0}},wbm_ack,wbm_stb,wbm_we};
+	tisc_identification #(.IDENT(CPCI_IDENT)) tisc_ident(`WBS_BARE_CONNECT(tisc));
+
+	wire [70:0] gb_debug;
+	assign gb_debug[0 +: 8] = GAD;
+	assign gb_debug[8 +: 4] = GSEL_B;
+	assign gb_debug[12 +: 4] = INIT_B;
+	assign gb_debug[16 +: 4] = PROGRAM_B;
+	assign gb_debug[20 +: 4] = DONE;
+	assign gb_debug[24] = GRDWR_B;
+
+	wire [35:0] ila0_control;
+	wire [35:0] ila1_control;
+	wire [35:0] vio_control;
+	wire [7:0] global_debug;
+	wire [63:0] vio_sync_in;
+	wire [47:0] vio_sync_out;
+
+	wire [31:0] bridge_dat_o = vio_sync_in[0 +: 32];
+	wire [19:0] bridge_adr_o = vio_sync_in[32 +: 20];
+	wire bridge_we_o = vio_sync_in[52];
+	wire bridge_go_o = vio_sync_in[53];
+	wire bridge_lock_o = vio_sync_in[54];
+
+
+	wire [31:0] bridge_dat_i;
+	wire bridge_done_i;
+	wire bridge_err_i;
+	assign vio_sync_out[0 +: 32] = bridge_dat_i;
+	assign vio_sync_out[32] = bridge_done_i;
+	assign vio_sync_out[33] = bridge_err_i;
+
+
+	wbvio_bridge u_bridge(.clk_i(wb_clk),.rst_i(1'b0),
+		.wbvio_dat_i(bridge_dat_o),
+		.wbvio_adr_i(bridge_adr_o),
+		.wbvio_we_i(bridge_we_o),
+		.wbvio_go_i(bridge_go_o),
+		.wbvio_lock_i(bridge_lock_o),
+		.wbvio_dat_o(bridge_dat_i),
+		.wbvio_done_o(bridge_done_i),
+		.wbvio_err_o(bridge_err_i),
+		.cyc_o(wbvio_cyc_o),
+		.stb_o(wbvio_stb_o),
+		.we_o(wbvio_we_o),
+		.dat_i(wbvio_dat_i),
+		.dat_o(wbvio_dat_o),
+		.adr_o(wbvio_adr_o),
+		.ack_i(wbvio_ack_i),
+		.err_i(wbvio_err_i),
+		.rty_i(wbvio_rty_i)
+	);	
+	assign wbvio_sel_o = {4{1'b1}};
+	
+	tisc_icon u_icon(.CONTROL0(ila0_control),.CONTROL1(ila1_control),.CONTROL2(vio_control));
+	tisc_ila u_ila0(.CONTROL(ila0_control),.CLK(wb_clk),.TRIG0(wbc_debug));
+	tisc_ila u_ila1(.CONTROL(ila1_control),.CLK(wb_clk),.TRIG0(gb_debug));
+	tisc_vio u_vio(.CONTROL(vio_control),.CLK(wb_clk),.SYNC_IN(vio_sync_out),.SYNC_OUT(vio_sync_in),.ASYNC_OUT(global_debug));
 endmodule
 
 module tisc_identification(
-			input cyc_i,
-			input stb_i,
-			output [31:0] dat_o,
-			output ack_o
+			`WBS_NAMED_BARE_PORT(32, 5, 4)
 );
 
+parameter [31:0] IDENT = "CPCI";
+
 assign ack_o = stb_i && cyc_i;
-assign dat_o = "TISC";
+assign err_o = 1'b0;
+assign rty_o = 1'b0;
+assign dat_o = IDENT;
 endmodule

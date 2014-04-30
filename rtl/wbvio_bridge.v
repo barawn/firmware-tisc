@@ -10,12 +10,14 @@
 // Author:
 // Author:
 ////////////////////////////////////////////////////////////////////////////////
+
+// this has a 21-bit address. this really needs to be made a parameter.
 module wbvio_bridge(
 		input clk_i,
 		input rst_i,
 		// VIO bridge.
 		input [31:0] wbvio_dat_i,
-		input [19:0] wbvio_adr_i,
+		input [20:0] wbvio_adr_i,
 		input wbvio_we_i,
 		input wbvio_go_i,
 		input wbvio_lock_i,
@@ -24,7 +26,7 @@ module wbvio_bridge(
 		output wbvio_err_o,
 		// WISHBONE side.
 		output [31:0] dat_o,
-		output [19:0] adr_o,
+		output [20:0] adr_o,
 		output cyc_o,
 		output stb_o,
 		output we_o,
@@ -39,7 +41,7 @@ module wbvio_bridge(
 	 reg we = 0;
 	 reg [31:0] wb_dat_o = {32{1'b0}};
 	 reg [31:0] wb_dat_i = {32{1'b0}};
-	 reg [19:0] wb_adr_o = {20{1'b0}};
+	 reg [20:0] wb_adr_o = {21{1'b0}};
 	 reg done = 0;
 	 reg err = 0;
 	 wire go_rising;
