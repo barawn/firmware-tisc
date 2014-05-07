@@ -45,7 +45,7 @@ module glitc_conf_controller(
 			if (prog_request[i]) init_seen[i] <= 0;
 			else if (INIT_B[i]) init_seen[i] <= 0;
 
-			program[i] <= !prog_request[i];
+			program[i] <= prog_request[i];
 			prog_init_done[i] <= (prog_request[i] && counter == {4{1'b1}});
 		end
 

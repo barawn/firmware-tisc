@@ -254,25 +254,13 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="107"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="58"/>
     </file>
-    <file xil_pn:name="ipcore_dir/tisc_icon.xco" xil_pn:type="FILE_COREGEN">
-      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="117"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="62"/>
-    </file>
     <file xil_pn:name="../rtl/tisc_intercon.v" xil_pn:type="FILE_VERILOG">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="125"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="55"/>
     </file>
-    <file xil_pn:name="ipcore_dir/tisc_ila.xco" xil_pn:type="FILE_COREGEN">
-      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="126"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="61"/>
-    </file>
     <file xil_pn:name="../rtl/arbiter.v" xil_pn:type="FILE_VERILOG">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="132"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="53"/>
-    </file>
-    <file xil_pn:name="ipcore_dir/tisc_vio.xco" xil_pn:type="FILE_COREGEN">
-      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="134"/>
-      <association xil_pn:name="Implementation" xil_pn:seqID="60"/>
     </file>
     <file xil_pn:name="../rtl/wbvio_bridge.v" xil_pn:type="FILE_VERILOG">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="140"/>
@@ -282,14 +270,26 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="141"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="43"/>
     </file>
+    <file xil_pn:name="ipcore_dir/tisc_icon.xco" xil_pn:type="FILE_COREGEN">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="79"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="79"/>
+    </file>
+    <file xil_pn:name="ipcore_dir/tisc_ila.xco" xil_pn:type="FILE_COREGEN">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="85"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="85"/>
+    </file>
+    <file xil_pn:name="ipcore_dir/tisc_vio.xco" xil_pn:type="FILE_COREGEN">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="91"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="91"/>
+    </file>
     <file xil_pn:name="ipcore_dir/tisc_icon.xise" xil_pn:type="FILE_COREGENISE">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="80"/>
     </file>
     <file xil_pn:name="ipcore_dir/tisc_ila.xise" xil_pn:type="FILE_COREGENISE">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="86"/>
     </file>
     <file xil_pn:name="ipcore_dir/tisc_vio.xise" xil_pn:type="FILE_COREGENISE">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="92"/>
     </file>
   </files>
 
@@ -629,11 +629,11 @@
     <!-- Do not hand-edit this section, as it will be overwritten when the    -->
     <!-- project is analyzed based on files automatically identified as       -->
     <!-- include files.                                                       -->
+    <file xil_pn:name="../rtl/wishbone.vh" xil_pn:type="FILE_VERILOG"/>
+    <file xil_pn:name="../rtl/pci.vh" xil_pn:type="FILE_VERILOG"/>
     <file xil_pn:name="../rtl/opencores.org-pci/pci_constants.v" xil_pn:type="FILE_VERILOG"/>
     <file xil_pn:name="../rtl/opencores.org-pci/pci_user_constants.v" xil_pn:type="FILE_VERILOG"/>
     <file xil_pn:name="../rtl/opencores.org-pci/bus_commands.v" xil_pn:type="FILE_VERILOG"/>
-    <file xil_pn:name="../rtl/wishbone.vh" xil_pn:type="FILE_VERILOG"/>
-    <file xil_pn:name="../rtl/pci.vh" xil_pn:type="FILE_VERILOG"/>
   </autoManagedFiles>
 
 </project>
