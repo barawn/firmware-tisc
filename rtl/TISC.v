@@ -37,9 +37,12 @@ module TISC(
 		inout [7:0] GAD,
 		output GCLK,
 		// Programming
-		output [3:0] PROGRAM_B,
+		inout [3:0] PROGRAM_B,
 		input [3:0] INIT_B,
 		input [3:0] DONE,
+		// Clock select and enable
+		output SYSCLK_SEL,
+		output EN_LOCAL_CLK,
 		// JTAG
 		output GSEL_JTAG_B
     );
@@ -130,30 +133,45 @@ module TISC(
 									 `WBM_CONNECT(gcc, gcc),
 									 `WBM_CONNECT(tisc, tisc),
 									 .debug_o(wbc_debug));	
-	
+	wire [7:0] gad_debug;
+	wire [3:0] gsel_debug;
+	wire grdwr_debug;
+	wire gclk_debug;
+	wire [15:0] gbm_debug;
 	glitcbus_master gb_master(.clk_i(wb_clk),
 									`WBS_BARE_CONNECT(gbm),
 									.GSEL_B(GSEL_B),
 									.GAD(GAD),
 									.GRDWR_B(GRDWR_B),
 									.GCLK(GCLK),
-									.gready_i(glitc_ready));
+									.gad_debug_o(gad_debug),
+									.gsel_b_debug_o(gsel_debug),
+									.grdwr_b_debug_o(grdwr_debug),
+									.gclk_debug_o(gclk_debug),
+									.gready_i(glitc_ready),
+									.debug_o(gbm_debug));
 	glitc_conf_controller gc_controller(.clk_i(wb_clk),
 													`WBS_BARE_CONNECT(gcc),
 													.gready_o(glitc_ready),
 													.PROGRAM_B(PROGRAM_B),
 													.INIT_B(INIT_B),
 													.DONE(DONE));
-	tisc_identification #(.IDENT(CPCI_IDENT)) tisc_ident(`WBS_BARE_CONNECT(tisc));
+	tisc_identification #(.IDENT(CPCI_IDENT)) tisc_ident(.clk_i(wb_clk),
+																		  .rst_i(1'b0),
+																		  `WBS_BARE_CONNECT(tisc),
+																		  .SYSCLK_SEL(SYSCLK_SEL),
+																		  .EN_LOCAL_CLK(EN_LOCAL_CLK));
 
 	wire [70:0] gb_debug;
-	assign gb_debug[0 +: 8] = GAD;
-	assign gb_debug[8 +: 4] = GSEL_B;
+	assign gb_debug[0 +: 8] = gad_debug;
+	assign gb_debug[8 +: 4] = gsel_debug;
 	assign gb_debug[12 +: 4] = INIT_B;
 	assign gb_debug[16 +: 4] = PROGRAM_B;
 	assign gb_debug[20 +: 4] = DONE;
-	assign gb_debug[24] = GRDWR_B;
-
+	assign gb_debug[24] = grdwr_debug;
+	assign gb_debug[25] = gclk_debug;
+	assign gb_debug[26 +: 4] = glitc_ready;
+	assign gb_debug[30 +: 16] = gbm_debug;
 	wire [35:0] ila0_control;
 	wire [35:0] ila1_control;
 	wire [35:0] vio_control;
@@ -166,6 +184,40 @@ module TISC(
 	wire bridge_we_o = vio_sync_in[52];
 	wire bridge_go_o = vio_sync_in[53];
 	wire bridge_lock_o = vio_sync_in[54];
+
+  reg [31:0] pci_debug_data = {32{1'b0}};
+  reg [19:0] pci_debug_adr = {20{1'b0}};
+  reg [3:0] pci_debug_sel = {4{1'b0}};
+  reg pci_debug_cyc = 0;
+  reg pci_debug_stb = 0;
+  reg pci_debug_ack = 0;
+  reg pci_debug_we = 0;
+  reg pci_debug_err = 0;
+  reg pci_debug_rty = 0;
+
+  always @(posedge wb_clk) begin
+			 if (pcic_we_o) pci_debug_data <= pcic_dat_o;
+			 else pci_debug_data <= pcic_dat_i;
+
+			 pci_debug_adr <= pcic_adr_o;
+			 pci_debug_cyc <= pcic_cyc_o;
+			 pci_debug_sel <= pcic_sel_o;
+			 pci_debug_stb <= pcic_stb_o;
+			 pci_debug_we <= pcic_we_o;
+			 pci_debug_ack <= pcic_ack_i;
+			 pci_debug_err <= pcic_err_i;
+			 pci_debug_rty <= pcic_rty_i;
+  end
+	wire [70:0] pci_debug;
+  assign pci_debug[0 +: 32] = pci_debug_data;
+  assign pci_debug[32 +: 20] = pci_debug_adr;
+  assign pci_debug[52 +: 4] = pci_debug_sel;
+  assign pci_debug[56] = pci_debug_cyc;
+  assign pci_debug[57] = pci_debug_stb;
+  assign pci_debug[58] = pci_debug_we;
+  assign pci_debug[59] = pci_debug_ack;
+  assign pci_debug[60] = pci_debug_err;
+  assign pci_debug[61] = pci_debug_rty;
 
 
 	wire [31:0] bridge_dat_i;
@@ -198,19 +250,61 @@ module TISC(
 	assign wbvio_sel_o = {4{1'b1}};
 	
 	tisc_icon u_icon(.CONTROL0(ila0_control),.CONTROL1(ila1_control),.CONTROL2(vio_control));
-	tisc_ila u_ila0(.CONTROL(ila0_control),.CLK(wb_clk),.TRIG0(wbc_debug));
+	tisc_ila u_ila0(.CONTROL(ila0_control),.CLK(wb_clk),.TRIG0(pci_debug));
 	tisc_ila u_ila1(.CONTROL(ila1_control),.CLK(wb_clk),.TRIG0(gb_debug));
 	tisc_vio u_vio(.CONTROL(vio_control),.CLK(wb_clk),.SYNC_IN(vio_sync_out),.SYNC_OUT(vio_sync_in),.ASYNC_OUT(global_debug));
 endmodule
 
 module tisc_identification(
-			`WBS_NAMED_BARE_PORT(32, 5, 4)
+			input clk_i,
+			input rst_i,
+			`WBS_NAMED_BARE_PORT(32, 5, 4),
+			output SYSCLK_SEL,
+			output EN_LOCAL_CLK
 );
 
-parameter [31:0] IDENT = "CPCI";
+	parameter [31:0] IDENT = "CPCI";
+	parameter [7:0] VER_REV = 8'h00;
+	parameter [3:0] VER_MINOR = 4'h00;
+	parameter [3:0] VER_MAJOR = 4'h00;
+	parameter [7:0] VER_DAY = 8'h00;
+	parameter [3:0] VER_MONTH = 4'h00;
+	parameter [3:0] VER_BOARD = 4'h00;
+	localparam [31:0] VERSION = {VER_BOARD,VER_MONTH,VER_DAY,VER_MAJOR,VER_MINOR,VER_REV}; 
+	
+	wire [31:0] CTRL0;
+	wire [31:0] CTRL1 = {32{1'b0}};
 
-assign ack_o = stb_i && cyc_i;
-assign err_o = 1'b0;
-assign rty_o = 1'b0;
-assign dat_o = IDENT;
+	// We have 16 registers: map 0x00 to IDENT, 0x01 to VERSION, 0x02 to CTRL0, 0x03 to CTRL1.
+	// Later we'll add an SPI core as well, and maybe a JTAG port. 
+	reg [31:0] dat_mux;
+	always @(*) begin
+		case (adr_i[3:2])
+			2'h0: dat_mux <= IDENT;
+			2'h1: dat_mux <= VERSION;
+			2'h2: dat_mux <= CTRL0;
+			2'h3: dat_mux <= CTRL1;
+		endcase
+	end
+
+	reg sysclk_sel_reg = 1;
+	reg en_local_clk_reg = 1;
+	always @(posedge clk_i) begin
+		if (rst_i) begin 
+			sysclk_sel_reg <= 1;
+			en_local_clk_reg <= 1;
+		end else begin
+			if (stb_i && cyc_i && adr_i[3:2] == 2'h2 && we_i) begin 
+				sysclk_sel_reg <= dat_i[0];
+				en_local_clk_reg <= dat_i[1];
+			end
+		end
+	end
+	assign SYSCLK_SEL = sysclk_sel_reg;
+	assign EN_LOCAL_CLK = en_local_clk_reg;
+	assign CTRL0 = {{30{1'b0}},EN_LOCAL_CLK,SYSCLK_SEL};
+	assign ack_o = stb_i && cyc_i;
+	assign err_o = 1'b0;
+	assign rty_o = 1'b0;
+	assign dat_o = dat_mux;
 endmodule

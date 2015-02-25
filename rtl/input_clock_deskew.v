@@ -30,7 +30,7 @@ module input_clock_deskew(
 			IBUFG i_ibufg(.I(I),.O(I_buffered));
 		end
 	endgenerate
-	assign O = I_buffered;
+	BUFG u_clk_bufg(.I(I_buffered),.O(O));
 	/*
 	generate
 		if (DEVICE == "7SERIES") begin : MMCME2

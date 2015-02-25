@@ -26,10 +26,10 @@ module tisc_intercon(
 			output [70:0] debug_o
     );
 	// Masks work by matching the address & ~mask = base.
-	localparam [20:0] TISC_BASE = 21'h000000; // We want to pay attention to the top bit, and bit 6.
-	localparam [20:0] TISC_MASK = 21'h0FFFC0;
+	localparam [20:0] TISC_BASE = 21'h000000; 
+	localparam [20:0] TISC_MASK = 21'h0FFFBF; // Top bit + bit 6 (1011 = 0xB)
 	localparam [20:0] GCC_BASE  = 21'h000040;
-	localparam [20:0] GCC_MASK  = 21'h0FFFC0;
+	localparam [20:0] GCC_MASK  = 21'h0FFFBF;
 	localparam [20:0] GBM_BASE  = 21'h100000;
 	localparam [20:0] GBM_MASK  = 21'h0FFFFF;
 
