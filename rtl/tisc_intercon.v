@@ -21,8 +21,8 @@ module tisc_intercon(
 			`WBS_NAMED_PORT(wbvio, 32, 21, 4),
 			`WBS_NAMED_PORT(i2cc, 32, 21, 4),
 			`WBM_NAMED_PORT(gbm, 32, 20, 4),
-			`WBM_NAMED_PORT(gcc, 32, 5, 4),
-			`WBM_NAMED_PORT(tisc, 32, 5, 4),
+			`WBM_NAMED_PORT(gcc, 32, 6, 4),
+			`WBM_NAMED_PORT(tisc, 32, 6, 4),
 			output [70:0] debug_o
     );
 	// Masks work by matching the address & ~mask = base.

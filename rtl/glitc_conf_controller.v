@@ -17,12 +17,14 @@
 // 2) Wait for that bit to be cleared and the INIT bit (bit 8 to bit 11) to be set.
 // 3) Program via the GLITCBUS interface.
 // 4) Wait for DONE to go high.
+// 5) Write '1' to a bit from bit 4 to bit 7 (for GLITCA->D respectively).
 `include "wishbone.vh"
 module glitc_conf_controller(
 		input clk_i,
 		`WBS_NAMED_BARE_PORT(32, 5, 4),
 		output [3:0] gready_o,
-		output [3:0] PROGRAM_B,
+		output [3:0] gprogram_o,
+		inout [3:0] PROGRAM_B,
 		input [3:0] INIT_B,
 		input [3:0] DONE
     );
@@ -63,11 +65,18 @@ module glitc_conf_controller(
 
 		ack <= cyc_i && stb_i;
 	end
+
+	generate
+		genvar j;
+		for (j=0;j<4;j=j+1) begin : PROG_OUTPUT
+			OBUFT u_prog_obuft(.I(1'b0),.T(!program[j]),.O(PROGRAM_B[j]));
+		end
+	endgenerate
+
 	assign dat_o = {{12{1'b0}},{4{1'b0}},done_seen,{4{1'b0}},init_seen,config_done,prog_request};
 	assign ack_o = ack && cyc_i && stb_i;
 	assign rty_o = 0;
 	assign err_o = 0;
 	assign gready_o = done_seen && config_done;
-	assign PROGRAM_B = ~program;
-	
+	assign gprogram_o = program;
 endmodule

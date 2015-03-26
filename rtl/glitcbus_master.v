@@ -31,6 +31,7 @@ module glitcbus_master(
 		inout [7:0] GAD,
 		output GRDWR_B,
 		output GCLK,
+		output GCLK_MON,
 		input clk_i,
 		output [7:0] gad_debug_o,
 		output grdwr_b_debug_o,
@@ -47,30 +48,28 @@ module glitcbus_master(
 	// 16-bit GLITCBUS address.
 	wire [15:0] glitc_adr = adr_i[17:2];
 	
-	reg [1:0] clock_counter = {2{1'b0}};
-	always @(posedge clk_i) begin
-		clock_counter <= clock_counter + 1;
-	end
-	
 	// Step down the GLITCBUS interface to 16 MHz.
 	reg clock_enable = 0;
 	always @(posedge clk_i) begin
-		clock_enable <= (clock_counter == {2{1'b1}});
-//		clock_enable <= ~clock_enable;
+		clock_enable <= ~clock_enable;
 	end
-	// This becomes the GLITCBUS clock. It's functionally
-	// inverted from clock_enable: e.g. its rising edge
-	// comes at the same time as all of the signals change.
+	// Generate GLITCBUS clock. 
+	// I have *no* idea WTF is the problem with GLITCBUS running
+	// at 30 MHz. It shouldn't even remotely be a problem.
 	(* IOB = "TRUE" *)
 	reg glitcbus_clock = 0;
+	(* IOB = "TRUE" *)
+	reg glitcbus_mon = 0;
 	reg glitcbus_clock_debug = 0;
 	always @(posedge clk_i) begin
-		glitcbus_clock <= clock_counter[1];
-		glitcbus_clock_debug <= clock_counter[1];
+		glitcbus_mon <= clock_enable;
+		glitcbus_clock <= clock_enable;
+		glitcbus_clock_debug <= clock_enable;
 //		glitcbus_clock <= clock_enable;
 //		glitcbus_clock_debug <= clock_enable;
 	end
 	assign GCLK = glitcbus_clock;
+	assign GCLK_MON = glitcbus_mon;
 	assign gclk_debug_o = glitcbus_clock_debug;
 	
 	localparam FSM_BITS = 5;
@@ -287,7 +286,7 @@ module glitcbus_master(
 			// There is a known bug with TRCE that just completely *#@^!s up the clock-to-out timing analysis using IODELAY2s
 			// in IO mode. So *IGNORE* the GAD<> delays in the datasheet report. They're garbage. Just use the GRDWR_B
 			// and GSEL_B clock-to-out delays, and add maybe a nanosecond for safety. 
-			IODELAY2 #(.DELAY_SRC("IO"),.IDELAY_TYPE("DEFAULT"),.ODELAY_VALUE(40)) u_iodelay(.ODATAIN(gad_out_to_odelay),
+			IODELAY2 #(.DELAY_SRC("IO"),.IDELAY_TYPE("DEFAULT"),.ODELAY_VALUE(120)) u_iodelay(.ODATAIN(gad_out_to_odelay),
 																													  .IDATAIN(gad_in_from_pad),
 																													  .T(gad_oeb_to_odelay),
 																													  .TOUT(gad_oeb_to_pad),
@@ -299,7 +298,7 @@ module glitcbus_master(
 			IOBUF u_iobuf(.IO(GAD[i]),.T(gad_oeb_to_pad),.I(gad_out_to_pad),.O(gad_in_from_pad));
 		end
 		for (j=0;j<4;j=j+1) begin : GSEL_LOOP
-			IODELAY2 #(.DELAY_SRC("ODATAIN"),.ODELAY_VALUE(40)) u_iodelay(.ODATAIN(gsel_out[j]),
+			IODELAY2 #(.DELAY_SRC("ODATAIN"),.ODELAY_VALUE(120)) u_iodelay(.ODATAIN(gsel_out[j]),
 																							 .DOUT(GSEL_B[j]));
 		end		
 	endgenerate
@@ -323,7 +322,7 @@ module glitcbus_master(
 	assign grdwr_b_debug_o = grdwr_b_out_debug_delayed;
 	assign gsel_b_debug_o = gsel_out_debug_delayed;
 	
-	IODELAY2 #(.DELAY_SRC("ODATAIN"),.ODELAY_VALUE(40)) u_iodelay_grdwr(.ODATAIN(grdwr_b_out), .DOUT(GRDWR_B));
+	IODELAY2 #(.DELAY_SRC("ODATAIN"),.ODELAY_VALUE(120)) u_iodelay_grdwr(.ODATAIN(grdwr_b_out), .DOUT(GRDWR_B));
 
 	assign ack_o = ack;
 	assign dat_o = data_out;
@@ -331,14 +330,5 @@ module glitcbus_master(
 	assign rty_o = 0;
 	assign debug_o[4:0] = state_delayed;
 	assign debug_o[5] = gad_oe_b_debug_delayed;
-endmodule
-
-module glitcbus_ologic( input TFF_T1,
-								output TFF_TQ,
-								input TFF_TCE,
-								input OFF_D1,
-								input OFF_OCE,
-								output OFF_OQ,
-								input CLK);
 endmodule
 
