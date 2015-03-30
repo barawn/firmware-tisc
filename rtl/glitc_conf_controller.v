@@ -77,6 +77,6 @@ module glitc_conf_controller(
 	assign ack_o = ack && cyc_i && stb_i;
 	assign rty_o = 0;
 	assign err_o = 0;
-	assign gready_o = done_seen && config_done;
+	assign gready_o = done_seen & config_done;
 	assign gprogram_o = program;
 endmodule

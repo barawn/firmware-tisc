@@ -61,10 +61,10 @@ module TISC(
 	// Firmware version.
 	localparam [3:0] VER_BOARD = 4'h0;
 	localparam [3:0] VER_MONTH = 4'd3;
-	localparam [7:0] VER_DAY = 8'd26;
+	localparam [7:0] VER_DAY = 8'd30;
 	localparam [3:0] VER_MAJOR = 4'd1;
 	localparam [3:0] VER_MINOR = 4'd1;
-	localparam [7:0] VER_REV = 8'd1;
+	localparam [7:0] VER_REV = 8'd2;
 	localparam [31:0] VERSION = {VER_BOARD,VER_MONTH,VER_DAY,VER_MAJOR,VER_MINOR,VER_REV}; 
 
 	// WISHBONE master busses.
@@ -152,6 +152,7 @@ module TISC(
 	wire grdwr_debug;
 	wire gclk_debug;
 	wire [15:0] gbm_debug;
+	wire [3:0] glitc_ready;
 	glitcbus_master_v2 gb_master(.clk_i(wb_clk),
 									`WBS_BARE_CONNECT(gbm),
 									.GSEL_B(GSEL_B),
