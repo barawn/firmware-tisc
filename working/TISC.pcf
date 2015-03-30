@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Mon Mar 30 16:18:53 2015
+// Written by: Map P.20131013 on Mon Mar 30 16:55:11 2015
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -764,48 +764,50 @@ TIMEGRP PCLK = BEL "pci_debug_ack" BEL "pci_debug_adr_0" BEL "pci_debug_adr_1"
         "tisc_ident/u_spi/dat_o_1" BEL "tisc_ident/u_spi/dat_o_0" BEL
         "u_intercon/u_arbiter/lgnt0" BEL "u_intercon/u_arbiter/ledge" BEL
         "u_intercon/u_arbiter/lasmask" BEL "u_intercon/u_arbiter/lgnt1" BEL
-        "gb_master/state_FSM_FFd2" BEL "gb_master/state_FSM_FFd3" BEL
-        "gb_master/state_FSM_FFd1" BEL "gb_master/state_FSM_FFd4" BEL
+        "gb_master/state_FSM_FFd1" BEL "gb_master/state_FSM_FFd2" BEL
+        "gb_master/state_FSM_FFd3" BEL "gb_master/state_FSM_FFd4" BEL
         "gb_master/state_FSM_FFd5" BEL "gb_master/state_FSM_FFd6" BEL
         "gb_master/state_FSM_FFd7" BEL "gb_master/state_FSM_FFd8" BEL
         "gb_master/state_FSM_FFd9" BEL "gb_master/state_FSM_FFd10" BEL
         "gb_master/state_FSM_FFd11" BEL "gb_master/state_FSM_FFd12" BEL
         "gb_master/state_FSM_FFd13" BEL "gb_master/state_FSM_FFd14" BEL
-        "gb_master/state_FSM_FFd15" BEL "gb_master/state_FSM_FFd17" BEL
-        "gb_master/state_FSM_FFd18" BEL "gb_master/state_FSM_FFd16" BEL
+        "gb_master/state_FSM_FFd15" BEL "gb_master/state_FSM_FFd16" BEL
+        "gb_master/state_FSM_FFd17" BEL "gb_master/state_FSM_FFd18" BEL
         "gb_master/state_FSM_FFd19" BEL "gb_master/state_FSM_FFd20" BEL
         "gb_master/state_FSM_FFd21" BEL "gb_master/state_FSM_FFd22" BEL
         "gb_master/state_FSM_FFd23" BEL "gb_master/state_FSM_FFd24" BEL
         "gb_master/state_FSM_FFd25" BEL "gb_master/state_FSM_FFd26" BEL
         "gb_master/state_FSM_FFd27" BEL "gb_master/state_FSM_FFd28" BEL
-        "gb_master/state_FSM_FFd29" BEL "gb_master/glitcbus_data_in_31" BEL
-        "gb_master/glitcbus_data_in_30" BEL "gb_master/glitcbus_data_in_29"
-        BEL "gb_master/glitcbus_data_in_28" BEL
-        "gb_master/glitcbus_data_in_27" BEL "gb_master/glitcbus_data_in_26"
-        BEL "gb_master/glitcbus_data_in_25" BEL
-        "gb_master/glitcbus_data_in_24" BEL "gb_master/glitcbus_data_in_23"
-        BEL "gb_master/glitcbus_data_in_22" BEL
-        "gb_master/glitcbus_data_in_21" BEL "gb_master/glitcbus_data_in_20"
-        BEL "gb_master/glitcbus_data_in_19" BEL
-        "gb_master/glitcbus_data_in_18" BEL "gb_master/glitcbus_data_in_17"
-        BEL "gb_master/glitcbus_data_in_16" BEL
-        "gb_master/glitcbus_data_in_15" BEL "gb_master/glitcbus_data_in_14"
-        BEL "gb_master/glitcbus_data_in_13" BEL
-        "gb_master/glitcbus_data_in_12" BEL "gb_master/glitcbus_data_in_11"
-        BEL "gb_master/glitcbus_data_in_10" BEL "gb_master/glitcbus_data_in_9"
-        BEL "gb_master/glitcbus_data_in_8" BEL "gb_master/glitcbus_data_in_7"
-        BEL "gb_master/glitcbus_data_in_6" BEL "gb_master/glitcbus_data_in_5"
-        BEL "gb_master/glitcbus_data_in_4" BEL "gb_master/glitcbus_data_in_3"
-        BEL "gb_master/glitcbus_data_in_2" BEL "gb_master/glitcbus_data_in_1"
-        BEL "gb_master/glitcbus_data_in_0" BEL "gb_master/gad_q_7" BEL
+        "gb_master/state_FSM_FFd29" BEL "gb_master/state_FSM_FFd30" BEL
+        "gb_master/state_FSM_FFd31" BEL "gb_master/state_FSM_FFd32" BEL
+        "gb_master/glitcbus_data_in_31" BEL "gb_master/glitcbus_data_in_30"
+        BEL "gb_master/glitcbus_data_in_29" BEL
+        "gb_master/glitcbus_data_in_28" BEL "gb_master/glitcbus_data_in_27"
+        BEL "gb_master/glitcbus_data_in_26" BEL
+        "gb_master/glitcbus_data_in_25" BEL "gb_master/glitcbus_data_in_24"
+        BEL "gb_master/glitcbus_data_in_23" BEL
+        "gb_master/glitcbus_data_in_22" BEL "gb_master/glitcbus_data_in_21"
+        BEL "gb_master/glitcbus_data_in_20" BEL
+        "gb_master/glitcbus_data_in_19" BEL "gb_master/glitcbus_data_in_18"
+        BEL "gb_master/glitcbus_data_in_17" BEL
+        "gb_master/glitcbus_data_in_16" BEL "gb_master/glitcbus_data_in_15"
+        BEL "gb_master/glitcbus_data_in_14" BEL
+        "gb_master/glitcbus_data_in_13" BEL "gb_master/glitcbus_data_in_12"
+        BEL "gb_master/glitcbus_data_in_11" BEL
+        "gb_master/glitcbus_data_in_10" BEL "gb_master/glitcbus_data_in_9" BEL
+        "gb_master/glitcbus_data_in_8" BEL "gb_master/glitcbus_data_in_7" BEL
+        "gb_master/glitcbus_data_in_6" BEL "gb_master/glitcbus_data_in_5" BEL
+        "gb_master/glitcbus_data_in_4" BEL "gb_master/glitcbus_data_in_3" BEL
+        "gb_master/glitcbus_data_in_2" BEL "gb_master/glitcbus_data_in_1" BEL
+        "gb_master/glitcbus_data_in_0" BEL "gb_master/gad_q_7" BEL
         "gb_master/gad_q_6" BEL "gb_master/gad_q_5" BEL "gb_master/gad_q_4"
         BEL "gb_master/gad_q_3" BEL "gb_master/gad_q_2" BEL
         "gb_master/gad_q_1" BEL "gb_master/gad_q_0" BEL
         "gb_master/state_delayed_4" BEL "gb_master/state_delayed_3" BEL
         "gb_master/state_delayed_2" BEL "gb_master/state_delayed_1" BEL
         "gb_master/state_delayed_0" BEL "gb_master/grdwr_b_q" BEL
-        "gb_master/gsel_b_q_0" BEL "gb_master/gsel_b_q_2" BEL
-        "gb_master/gsel_b_q_3" BEL "gb_master/gsel_b_q_1" BEL
+        "gb_master/gsel_b_q_0" BEL "gb_master/gsel_b_q_1" BEL
+        "gb_master/gsel_b_q_3" BEL "gb_master/gsel_b_q_2" BEL
         "gb_master/gsel_enable_b_3" BEL "gb_master/gsel_enable_b_2" BEL
         "gb_master/gsel_enable_b_1" BEL "gb_master/gsel_enable_b_0" BEL
         "gb_master/ack" PIN "gb_master/u_clkgen/u_dcm_pins<2>" BEL
@@ -1063,12 +1065,13 @@ TIMEGRP PCLK = BEL "pci_debug_ack" BEL "pci_debug_adr_0" BEL "pci_debug_adr_1"
         BEL "gb_master/state_FSM_FFd11_1" BEL "gb_master/state_FSM_FFd12_1"
         BEL "gb_master/state_FSM_FFd13_1" BEL "gb_master/state_FSM_FFd14_1"
         BEL "gb_master/state_FSM_FFd15_1" BEL "gb_master/state_FSM_FFd17_1"
-        BEL "gb_master/state_FSM_FFd2_1" BEL "gb_master/state_FSM_FFd21_1" BEL
-        "gb_master/state_FSM_FFd25_1" BEL "gb_master/state_FSM_FFd27_1" BEL
-        "gb_master/state_FSM_FFd28_1" BEL "gb_master/state_FSM_FFd3_1" BEL
-        "gb_master/state_FSM_FFd4_1" BEL "gb_master/state_FSM_FFd8_1" BEL
-        "gb_master/u_clkgen/clock_enable_1" BEL
-        "gb_master/u_clkgen/clock_enable_2" BEL
+        BEL "gb_master/state_FSM_FFd18_1" BEL "gb_master/state_FSM_FFd19_1"
+        BEL "gb_master/state_FSM_FFd2_1" BEL "gb_master/state_FSM_FFd20_1" BEL
+        "gb_master/state_FSM_FFd24_1" BEL "gb_master/state_FSM_FFd28_1" BEL
+        "gb_master/state_FSM_FFd3_1" BEL "gb_master/state_FSM_FFd30_1" BEL
+        "gb_master/state_FSM_FFd31_1" BEL "gb_master/state_FSM_FFd4_1" BEL
+        "gb_master/state_FSM_FFd8_1" BEL "gb_master/u_clkgen/clock_enable_1"
+        BEL "gb_master/u_clkgen/clock_enable_2" BEL
         "gb_master/u_clkgen/clock_enable_3" BEL
         "gb_master/u_clkgen/clock_enable_4" BEL
         "gb_master/u_clkgen/clock_enable_5" BEL
@@ -1367,32 +1370,32 @@ TIMEGRP PCLK = BEL "pci_debug_ack" BEL "pci_debug_adr_0" BEL "pci_debug_adr_1"
         "u_pci/pci_target_unit/fifos/pcir_fifo_storage/Mram_mem1_pins<17>" BEL
         "gb_master/Mshreg_gad_oe_b_debug_delayed" BEL
         "gb_master/gad_oe_b_debug_delayed" BEL
-        "gb_master/Mshreg_gsel_out_debug_delayed_3" BEL
-        "gb_master/gsel_out_debug_delayed_3" BEL
-        "gb_master/Mshreg_gsel_out_debug_delayed_2" BEL
-        "gb_master/gsel_out_debug_delayed_2" BEL
-        "gb_master/Mshreg_gsel_out_debug_delayed_1" BEL
-        "gb_master/gsel_out_debug_delayed_1" BEL
-        "gb_master/Mshreg_gad_out_debug_delayed_6" BEL
-        "gb_master/gad_out_debug_delayed_6" BEL
-        "gb_master/Mshreg_gsel_out_debug_delayed_0" BEL
-        "gb_master/gsel_out_debug_delayed_0" BEL
+        "gb_master/Mshreg_grdwr_b_out_debug_delayed" BEL
+        "gb_master/grdwr_b_out_debug_delayed" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_7" BEL
         "gb_master/gad_out_debug_delayed_7" BEL
+        "gb_master/Mshreg_gad_out_debug_delayed_6" BEL
+        "gb_master/gad_out_debug_delayed_6" BEL
+        "gb_master/Mshreg_gad_out_debug_delayed_3" BEL
+        "gb_master/gad_out_debug_delayed_3" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_5" BEL
         "gb_master/gad_out_debug_delayed_5" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_4" BEL
         "gb_master/gad_out_debug_delayed_4" BEL
-        "gb_master/Mshreg_gad_out_debug_delayed_3" BEL
-        "gb_master/gad_out_debug_delayed_3" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_2" BEL
         "gb_master/gad_out_debug_delayed_2" BEL
-        "gb_master/Mshreg_grdwr_b_out_debug_delayed" BEL
-        "gb_master/grdwr_b_out_debug_delayed" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_1" BEL
         "gb_master/gad_out_debug_delayed_1" BEL
         "gb_master/Mshreg_gad_out_debug_delayed_0" BEL
         "gb_master/gad_out_debug_delayed_0" BEL
+        "gb_master/Mshreg_gsel_out_debug_delayed_3" BEL
+        "gb_master/gsel_out_debug_delayed_3" BEL
+        "gb_master/Mshreg_gsel_out_debug_delayed_0" BEL
+        "gb_master/gsel_out_debug_delayed_0" BEL
+        "gb_master/Mshreg_gsel_out_debug_delayed_2" BEL
+        "gb_master/gsel_out_debug_delayed_2" BEL
+        "gb_master/Mshreg_gsel_out_debug_delayed_1" BEL
+        "gb_master/gsel_out_debug_delayed_1" BEL
         "u_ila1/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_NEQ2.U_TC_EQUATION/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL/I_OUTREG.U_DOUT"
         BEL
         "u_ila1/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_STORAGE_QUAL.U_STORAGE_QUAL/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL/I_OUTREG.U_DOUT"

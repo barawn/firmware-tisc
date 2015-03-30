@@ -1,7 +1,7 @@
 Release 14.7 par P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-SWORD::  Mon Mar 30 16:18:59 2015
+SWORD::  Mon Mar 30 16:55:18 2015
 
 par -filter
 C:/Users/Ryan/Documents/GitHub/firmware-tisc/par/iseconfig/filter.filter -w
@@ -19,7 +19,7 @@ to function, but you no longer qualify for Xilinx software updates or new releas
 
 ----------------------------------------------------------------------
 WARNING:ConstraintSystem - The Offset constraint <TIMEGRP "PCI_GROUP" OFFSET = IN 7 ns BEFORE COMP "pci_clk" "RISING";>
-   [TISC.pcf(5172)], is specified without a duration.  This will result in a lack of hold time checks in timing reports.
+   [TISC.pcf(5175)], is specified without a duration.  This will result in a lack of hold time checks in timing reports.
     If hold time checks are desired a duration value should be specified following the 'VALID' keyword.
 
 
@@ -34,39 +34,39 @@ Device speed data version:  "PRODUCTION 1.23 2013-10-13".
 Device Utilization Summary:
 
 Slice Logic Utilization:
-  Number of Slice Registers:                 3,968 out of  11,440   34%
-    Number used as Flip Flops:               3,966
+  Number of Slice Registers:                 3,974 out of  11,440   34%
+    Number used as Flip Flops:               3,972
     Number used as Latches:                      2
     Number used as Latch-thrus:                  0
     Number used as AND/OR logics:                0
-  Number of Slice LUTs:                      3,431 out of   5,720   59%
-    Number used as logic:                    1,849 out of   5,720   32%
-      Number using O6 output only:           1,202
-      Number using O5 output only:             231
-      Number using O5 and O6:                  416
+  Number of Slice LUTs:                      3,465 out of   5,720   60%
+    Number used as logic:                    1,852 out of   5,720   32%
+      Number using O6 output only:           1,211
+      Number using O5 output only:             226
+      Number using O5 and O6:                  415
       Number used as ROM:                        0
-    Number used as Memory:                     546 out of   1,440   37%
+    Number used as Memory:                     547 out of   1,440   37%
       Number used as Dual Port RAM:              8
         Number using O6 output only:             0
         Number using O5 output only:             0
         Number using O5 and O6:                  8
       Number used as Single Port RAM:            0
-      Number used as Shift Register:           538
-        Number using O6 output only:           178
+      Number used as Shift Register:           539
+        Number using O6 output only:           180
         Number using O5 output only:             2
-        Number using O5 and O6:                358
-    Number used exclusively as route-thrus:  1,036
-      Number with same-slice register load:  1,018
+        Number using O5 and O6:                357
+    Number used exclusively as route-thrus:  1,066
+      Number with same-slice register load:  1,048
       Number with same-slice carry load:        18
       Number with other load:                    0
 
 Slice Logic Distribution:
-  Number of occupied Slices:                 1,411 out of   1,430   98%
+  Number of occupied Slices:                 1,408 out of   1,430   98%
   Number of MUXCYs used:                       620 out of   2,860   21%
-  Number of LUT Flip Flop pairs used:        3,797
-    Number with an unused Flip Flop:         1,232 out of   3,797   32%
-    Number with an unused LUT:                 366 out of   3,797    9%
-    Number of fully used LUT-FF pairs:       2,199 out of   3,797   57%
+  Number of LUT Flip Flop pairs used:        3,843
+    Number with an unused Flip Flop:         1,266 out of   3,843   32%
+    Number with an unused LUT:                 378 out of   3,843    9%
+    Number of fully used LUT-FF pairs:       2,199 out of   3,843   57%
     Number of slice register sites lost
       to control set restrictions:               0 out of  11,440    0%
 
@@ -121,9 +121,16 @@ Router effort level (-rl):    High
 
 PAR will use up to 4 processors
 WARNING:Par:288 - The signal MISO_IBUF has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[66].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[41].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[40].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[70].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
+WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<1> has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<0> has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<3> has no load.  PAR will not attempt to route this signal.
@@ -132,41 +139,34 @@ WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<5> has no load.  PAR will not
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<4> has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<7> has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/UPDATE<6> has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[66].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
-WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_SYNC_OUT[70].SYNC_OUT_CELL/out_temp has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal u_vio/U0/I_VIO/GEN_UPDATE_OUT[143].UPDATE_CELL/out_temp has no load.  PAR will not attempt to route this
    signal.
 Starting Multi-threaded Router
 
 
-Phase  1  : 19694 unrouted;      REAL time: 11 secs 
+Phase  1  : 19711 unrouted;      REAL time: 16 secs 
 
-Phase  2  : 15383 unrouted;      REAL time: 12 secs 
+Phase  2  : 15418 unrouted;      REAL time: 19 secs 
 
-Phase  3  : 6411 unrouted;      REAL time: 20 secs 
+Phase  3  : 6349 unrouted;      REAL time: 37 secs 
 
-Phase  4  : 6411 unrouted; (Setup:0, Hold:622, Component Switching Limit:0)     REAL time: 21 secs 
+Phase  4  : 6349 unrouted; (Setup:0, Hold:358, Component Switching Limit:0)     REAL time: 37 secs 
 
 Updating file: TISC.ncd with current fully routed design.
 
-Phase  5  : 0 unrouted; (Setup:0, Hold:541, Component Switching Limit:0)     REAL time: 29 secs 
+Phase  5  : 0 unrouted; (Setup:0, Hold:271, Component Switching Limit:0)     REAL time: 50 secs 
 
-Phase  6  : 0 unrouted; (Setup:0, Hold:541, Component Switching Limit:0)     REAL time: 29 secs 
+Phase  6  : 0 unrouted; (Setup:0, Hold:271, Component Switching Limit:0)     REAL time: 50 secs 
 
-Phase  7  : 0 unrouted; (Setup:0, Hold:541, Component Switching Limit:0)     REAL time: 29 secs 
+Phase  7  : 0 unrouted; (Setup:0, Hold:271, Component Switching Limit:0)     REAL time: 50 secs 
 
-Phase  8  : 0 unrouted; (Setup:0, Hold:541, Component Switching Limit:0)     REAL time: 29 secs 
+Phase  8  : 0 unrouted; (Setup:0, Hold:271, Component Switching Limit:0)     REAL time: 50 secs 
 
-Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 30 secs 
+Phase  9  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 51 secs 
 
-Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 31 secs 
-Total REAL time to Router completion: 31 secs 
-Total CPU time to Router completion (all processors): 51 secs 
+Phase 10  : 0 unrouted; (Setup:0, Hold:0, Component Switching Limit:0)     REAL time: 52 secs 
+Total REAL time to Router completion: 52 secs 
+Total CPU time to Router completion (all processors): 1 mins 4 secs 
 
 Generating "PAR" statistics.
 
@@ -177,115 +177,115 @@ Generating Clock Report
 +---------------------+--------------+------+------+------------+-------------+
 |        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
 +---------------------+--------------+------+------+------------+-------------+
-|               clk_i |  BUFGMUX_X2Y3| No   | 1130 |  0.604     |  1.672      |
+|               clk_i |  BUFGMUX_X2Y3| No   | 1132 |  0.605     |  1.673      |
 +---------------------+--------------+------+------+------------+-------------+
-|     ila0_control<0> |  BUFGMUX_X2Y2| No   |  294 |  0.119     |  1.187      |
+|     ila0_control<0> |  BUFGMUX_X2Y2| No   |  297 |  0.117     |  1.185      |
 +---------------------+--------------+------+------+------------+-------------+
 |gb_master/u_clkgen/s |              |      |      |            |             |
 |hifted_clk_for_gclk_ |              |      |      |            |             |
 |                BUFG | BUFGMUX_X3Y13| No   |    3 |  0.006     |  1.616      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<29 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.283     |  1.806      |
+|                   > |         Local|      |    5 |  1.086     |  2.164      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<14 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.053     |  1.770      |
+|                   > |         Local|      |    5 |  0.827     |  1.957      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<22 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.000     |  2.095      |
+|                   > |         Local|      |    5 |  0.201     |  0.905      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<30 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.587     |  2.189      |
+|                   > |         Local|      |    5 |  1.929     |  2.454      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<3> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.486     |  1.098      |
+|                     |         Local|      |    5 |  0.651     |  1.928      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<8> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.396     |  1.926      |
+|                     |         Local|      |    5 |  0.000     |  1.448      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<10 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.497     |  1.936      |
+|                   > |         Local|      |    5 |  0.000     |  0.667      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<4> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.000     |  2.533      |
+|                     |         Local|      |    5 |  0.715     |  2.536      |
 +---------------------+--------------+------+------+------------+-------------+
-|    ila0_control<13> |         Local|      |    5 |  0.000     |  1.370      |
+|    ila0_control<13> |         Local|      |    5 |  0.000     |  0.578      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<12 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.207     |  1.818      |
+|                   > |         Local|      |    5 |  0.870     |  1.549      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<20 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.227     |  1.808      |
+|                   > |         Local|      |    5 |  0.068     |  0.916      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<18 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.456     |  1.921      |
+|                   > |         Local|      |    5 |  0.531     |  1.319      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<26 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  1.089     |  2.083      |
+|                   > |         Local|      |    5 |  0.440     |  1.240      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<7> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.021     |  1.412      |
+|                     |         Local|      |    5 |  0.000     |  1.962      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<6> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.345     |  2.100      |
+|                     |         Local|      |    5 |  0.414     |  1.815      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<11 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.391     |  1.909      |
+|                   > |         Local|      |    5 |  0.000     |  1.627      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<13 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.395     |  2.119      |
+|                   > |         Local|      |    5 |  0.348     |  1.221      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<21 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.041     |  1.270      |
+|                   > |         Local|      |    5 |  0.456     |  0.954      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<15 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.163     |  1.541      |
+|                   > |         Local|      |    5 |  0.000     |  1.769      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<23 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.580     |  2.610      |
+|                   > |         Local|      |    5 |  0.508     |  1.480      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<31 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.245     |  1.925      |
+|                   > |         Local|      |    5 |  0.551     |  1.581      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<16 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.000     |  1.743      |
+|                   > |         Local|      |    5 |  0.230     |  1.386      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<24 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.560     |  1.948      |
+|                   > |         Local|      |    5 |  0.624     |  1.470      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<17 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.445     |  1.506      |
+|                   > |         Local|      |    5 |  0.742     |  1.662      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<25 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.621     |  1.879      |
+|                   > |         Local|      |    5 |  0.389     |  1.536      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<19 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.043     |  1.222      |
+|                   > |         Local|      |    5 |  0.763     |  1.244      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<27 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.345     |  1.267      |
+|                   > |         Local|      |    5 |  0.295     |  1.920      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<28 |              |      |      |            |             |
-|                   > |         Local|      |    5 |  0.425     |  1.343      |
+|                   > |         Local|      |    5 |  0.605     |  2.006      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<0> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.258     |  0.962      |
+|                     |         Local|      |    5 |  0.542     |  1.412      |
 +---------------------+--------------+------+------+------------+-------------+
-|       u_bridge/done |         Local|      |    6 |  0.397     |  1.626      |
+|       u_bridge/done |         Local|      |    6 |  0.426     |  2.098      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<1> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.490     |  1.798      |
+|                     |         Local|      |    5 |  0.406     |  1.278      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<2> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.182     |  1.649      |
+|                     |         Local|      |    5 |  0.608     |  1.917      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<5> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.187     |  1.927      |
+|                     |         Local|      |    5 |  0.818     |  2.026      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_bridge/wb_dat_i<9> |              |      |      |            |             |
-|                     |         Local|      |    5 |  0.000     |  1.472      |
+|                     |         Local|      |    5 |  0.393     |  1.641      |
 +---------------------+--------------+------+------+------------+-------------+
-|    ila1_control<13> |         Local|      |    5 |  0.000     |  1.314      |
+|    ila1_control<13> |         Local|      |    5 |  0.000     |  1.150      |
 +---------------------+--------------+------+------+------------+-------------+
 |u_icon/U0/iUPDATE_OU |              |      |      |            |             |
 |                   T |         Local|      |    1 |  0.000     |  0.835      |
@@ -308,22 +308,22 @@ Asterisk (*) preceding a constraint indicates it was not met.
   Constraint                                |    Check    | Worst Case |  Best Case | Timing |   Timing   
                                             |             |    Slack   | Achievable | Errors |    Score   
 ----------------------------------------------------------------------------------------------------------
-  TIMEGRP "PCI_GROUP" OFFSET = IN 7 ns BEFO | SETUP       |     0.093ns|     6.907ns|       0|           0
+  TIMEGRP "PCI_GROUP" OFFSET = IN 7 ns BEFO | SETUP       |     0.339ns|     6.661ns|       0|           0
   RE COMP "pci_clk" "RISING"                |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
-  TIMEGRP "PCI_GROUP" OFFSET = OUT 11 ns AF | MAXDELAY    |     3.048ns|     7.952ns|       0|           0
+  TIMEGRP "PCI_GROUP" OFFSET = OUT 11 ns AF | MAXDELAY    |     3.047ns|     7.953ns|       0|           0
   TER COMP "pci_clk" "RISING"               |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
   TIMEGRP "GB_GROUP" OFFSET = IN 19 ns VALI | SETUP       |    12.914ns|     6.086ns|       0|           0
-  D 27 ns BEFORE COMP "pci_clk"         "RI | HOLD        |    10.246ns|            |       0|           0
+  D 27 ns BEFORE COMP "pci_clk"         "RI | HOLD        |    10.245ns|            |       0|           0
   SING"                                     |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
-  TS_PCLK = PERIOD TIMEGRP "PCLK" 30 ns HIG | SETUP       |    19.847ns|    10.153ns|       0|           0
-  H 50%                                     | HOLD        |     0.297ns|            |       0|           0
+  TS_PCLK = PERIOD TIMEGRP "PCLK" 30 ns HIG | SETUP       |    18.635ns|    11.365ns|       0|           0
+  H 50%                                     | HOLD        |     0.308ns|            |       0|           0
                                             | MINLOWPULSE |    14.000ns|    16.000ns|       0|           0
 ----------------------------------------------------------------------------------------------------------
-  TS_gb_master_u_clkgen_shifted_clk_for_gcl | SETUP       |    15.874ns|     5.520ns|       0|           0
-  k = PERIOD TIMEGRP         "gb_master_u_c | HOLD        |    11.414ns|            |       0|           0
+  TS_gb_master_u_clkgen_shifted_clk_for_gcl | SETUP       |    15.924ns|     5.443ns|       0|           0
+  k = PERIOD TIMEGRP         "gb_master_u_c | HOLD        |    11.417ns|            |       0|           0
   lkgen_shifted_clk_for_gclk" TS_PCLK PHASE |             |            |            |        |            
    -10.546875 ns         HIGH 50%           |             |            |            |        |            
 ----------------------------------------------------------------------------------------------------------
@@ -343,8 +343,8 @@ Derived Constraints for TS_PCLK
 |           Constraint          | Requirement |-------------+-------------|-------------+-------------|-------------+-------------|
 |                               |             |   Direct    | Derivative  |   Direct    | Derivative  |   Direct    | Derivative  |
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
-|TS_PCLK                        |     30.000ns|     16.000ns|      5.520ns|            0|            0|        75437|            2|
-| TS_gb_master_u_clkgen_shifted_|     30.000ns|      5.520ns|          N/A|            0|            0|            2|            0|
+|TS_PCLK                        |     30.000ns|     16.000ns|      5.443ns|            0|            0|        75507|            2|
+| TS_gb_master_u_clkgen_shifted_|     30.000ns|      5.443ns|          N/A|            0|            0|            2|            0|
 | clk_for_gclk                  |             |             |             |             |             |             |             |
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
 
@@ -362,8 +362,8 @@ All signals are completely routed.
 
 WARNING:Par:283 - There are 20 loadless signals in this design. This design will cause Bitgen to issue DRC warnings.
 
-Total REAL time to PAR completion: 32 secs 
-Total CPU time to PAR completion (all processors): 52 secs 
+Total REAL time to PAR completion: 55 secs 
+Total CPU time to PAR completion (all processors): 1 mins 5 secs 
 
 Peak Memory Usage:  462 MB
 

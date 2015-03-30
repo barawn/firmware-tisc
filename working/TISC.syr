@@ -10,7 +10,7 @@ Total CPU time to Xst completion: 0.12 secs
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.12 secs
+Total CPU time to Xst completion: 0.13 secs
  
 --> Reading design: TISC.prj
 
@@ -1755,14 +1755,12 @@ WARNING:Xst:653 - Signal <debug_o<15:7>> is used but never assigned. This source
     Found 1-bit register for signal <gad_oe_b_debug_delayed>.
     Found 5-bit register for signal <state_delayed>.
     Found 5-bit register for signal <state>.
-INFO:Xst:1799 - State 01011 is never reached in FSM <state>.
-INFO:Xst:1799 - State 01100 is never reached in FSM <state>.
     Found finite state machine <FSM_4> for signal <state>.
     -----------------------------------------------------------------------
-    | States             | 31                                             |
-    | Transitions        | 63                                             |
+    | States             | 32                                             |
+    | Transitions        | 69                                             |
     | Inputs             | 5                                              |
-    | Outputs            | 34                                             |
+    | Outputs            | 37                                             |
     | Clock              | clk_i (rising_edge)                            |
     | Power Up State     | 00000                                          |
     | Encoding           | auto                                           |
@@ -2857,42 +2855,43 @@ Optimizing FSM <tisc_ident/u_spi/FSM_5> on signal <state[1:2]> with user encodin
  11    | 11
 -------------------
 Analyzing FSM <MFsm> for best encoding.
-Optimizing FSM <gb_master/FSM_4> on signal <state[1:29]> with one-hot encoding.
-----------------------------------------
+Optimizing FSM <gb_master/FSM_4> on signal <state[1:32]> with one-hot encoding.
+-------------------------------------------
  State | Encoding
-----------------------------------------
- 00000 | 00000000000000000000000000001
- 10110 | 00000000000000000000000000010
- 01111 | 00000000000000000000000000100
- 00001 | 00000000000000000000000001000
- 01110 | 00000000000000000000000010000
- 11111 | 00000000000000000000000100000
- 00010 | 00000000000000000000001000000
- 00011 | 00000000000000000000010000000
- 00100 | 00000000000000000000100000000
- 00111 | 00000000000000000001000000000
- 01000 | 00000000000000000010000000000
- 01001 | 00000000000000000100000000000
- 01010 | 00000000000000001000000000000
- 01011 | unreached
- 01100 | unreached
- 00110 | 00000000000000010000000000000
- 00101 | 00000000000000100000000000000
- 10000 | 00000000000001000000000000000
- 10001 | 00000000000010000000000000000
- 10010 | 00000000000100000000000000000
- 10011 | 00000000001000000000000000000
- 10100 | 00000000010000000000000000000
- 10101 | 00000000100000000000000000000
- 10111 | 00000001000000000000000000000
- 11000 | 00000010000000000000000000000
- 11001 | 00000100000000000000000000000
- 11010 | 00001000000000000000000000000
- 11011 | 00010000000000000000000000000
- 11100 | 00100000000000000000000000000
- 11101 | 01000000000000000000000000000
- 11110 | 10000000000000000000000000000
-----------------------------------------
+-------------------------------------------
+ 00000 | 00000000000000000000000000000001
+ 10110 | 00000000000000000000000000000010
+ 01111 | 00000000000000000000000000000100
+ 00001 | 00000000000000000000000000001000
+ 01110 | 00000000000000000000000000010000
+ 11111 | 00000000000000000000000000100000
+ 00010 | 00000000000000000000000001000000
+ 00011 | 00000000000000000000000010000000
+ 00100 | 00000000000000000000000100000000
+ 00111 | 00000000000000000000001000000000
+ 01000 | 00000000000000000000010000000000
+ 01001 | 00000000000000000000100000000000
+ 01101 | 00000000000000000001000000000000
+ 01010 | 00000000000000000010000000000000
+ 01011 | 00000000000000000100000000000000
+ 01100 | 00000000000000001000000000000000
+ 00110 | 00000000000000010000000000000000
+ 00101 | 00000000000000100000000000000000
+ 10000 | 00000000000001000000000000000000
+ 10001 | 00000000000010000000000000000000
+ 10010 | 00000000000100000000000000000000
+ 10011 | 00000000001000000000000000000000
+ 10100 | 00000000010000000000000000000000
+ 10101 | 00000000100000000000000000000000
+ 10111 | 00000001000000000000000000000000
+ 11000 | 00000010000000000000000000000000
+ 11001 | 00000100000000000000000000000000
+ 11010 | 00001000000000000000000000000000
+ 11011 | 00010000000000000000000000000000
+ 11100 | 00100000000000000000000000000000
+ 11101 | 01000000000000000000000000000000
+ 11110 | 10000000000000000000000000000000
+-------------------------------------------
 WARNING:Xst:1710 - FF/Latch <pcir_fifo_control_out_2> (without init value) has a constant value of 0 in block <pci_wb_master>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <pcir_fifo_control_out_3> (without init value) has a constant value of 0 in block <pci_wb_master>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:2677 - Node <pcir_fifo_ctrl_reg_0> of sequential type is unconnected in block <pci_target32_interface>.
@@ -3787,7 +3786,7 @@ WARNING:Xst:2677 - Node <u_pci/wishbone_slave_unit/pci_initiator_sm/latency_time
 
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 5) on block TISC, actual ratio is 67.
+Found area constraint ratio of 100 (+ 5) on block TISC, actual ratio is 68.
 
 Pipelining and Register Balancing Report ...
 
@@ -3878,12 +3877,15 @@ FlipFlop gb_master/state_FSM_FFd13 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd14 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd15 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd17 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd18 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd19 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd2 has been replicated 1 time(s)
-FlipFlop gb_master/state_FSM_FFd21 has been replicated 1 time(s)
-FlipFlop gb_master/state_FSM_FFd25 has been replicated 1 time(s)
-FlipFlop gb_master/state_FSM_FFd27 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd20 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd24 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd28 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd3 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd30 has been replicated 1 time(s)
+FlipFlop gb_master/state_FSM_FFd31 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd4 has been replicated 1 time(s)
 FlipFlop gb_master/state_FSM_FFd8 has been replicated 1 time(s)
 FlipFlop gb_master/u_clkgen/clock_enable has been replicated 10 time(s)
@@ -3980,10 +3982,7 @@ Final Macro Processing ...
 
 Processing Unit <TISC> :
 	Found 2-bit shift register for signal <gb_master/gad_oe_b_debug_delayed>.
-	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_3>.
-	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_2>.
-	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_1>.
-	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_0>.
+	Found 2-bit shift register for signal <gb_master/grdwr_b_out_debug_delayed>.
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_7>.
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_6>.
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_5>.
@@ -3992,15 +3991,18 @@ Processing Unit <TISC> :
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_2>.
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_1>.
 	Found 2-bit shift register for signal <gb_master/gad_out_debug_delayed_0>.
-	Found 2-bit shift register for signal <gb_master/grdwr_b_out_debug_delayed>.
+	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_3>.
+	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_2>.
+	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_1>.
+	Found 2-bit shift register for signal <gb_master/gsel_out_debug_delayed_0>.
 Unit <TISC> processed.
 
 =========================================================================
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 1394
- Flip-Flops                                            : 1394
+# Registers                                            : 1400
+ Flip-Flops                                            : 1400
 # Shift Registers                                      : 14
  2-bit shift register                                  : 14
 
@@ -4025,16 +4027,16 @@ Top Level Output File Name         : TISC.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 3717
+# BELS                             : 3722
 #      BUF                         : 396
 #      GND                         : 5
 #      INV                         : 182
 #      LUT1                        : 430
-#      LUT2                        : 232
-#      LUT3                        : 633
-#      LUT4                        : 308
-#      LUT5                        : 206
-#      LUT6                        : 618
+#      LUT2                        : 233
+#      LUT3                        : 612
+#      LUT4                        : 328
+#      LUT5                        : 202
+#      LUT6                        : 627
 #      MUXCY                       : 62
 #      MUXCY_L                     : 449
 #      MUXF5                       : 2
@@ -4043,8 +4045,8 @@ Primitive and Black Box Usage:
 #      MUXF8                       : 4
 #      VCC                         : 5
 #      XORCY                       : 156
-# FlipFlops/Latches                : 4273
-#      FD                          : 487
+# FlipFlops/Latches                : 4279
+#      FD                          : 493
 #      FDC                         : 491
 #      FDCE                        : 536
 #      FDE                         : 926
@@ -4086,18 +4088,18 @@ Selected Device : 6slx9tqg144-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:            4174  out of  11440    36%  
- Number of Slice LUTs:                 2945  out of   5720    51%  
-    Number used as Logic:              2609  out of   5720    45%  
+ Number of Slice Registers:            4180  out of  11440    36%  
+ Number of Slice LUTs:                 2950  out of   5720    51%  
+    Number used as Logic:              2614  out of   5720    45%  
     Number used as Memory:              336  out of   1440    23%  
        Number used as RAM:               16
        Number used as SRL:              320
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:   5776
-   Number with an unused Flip Flop:    1602  out of   5776    27%  
-   Number with an unused LUT:          2831  out of   5776    49%  
-   Number of fully used LUT-FF pairs:  1343  out of   5776    23%  
+ Number of LUT Flip Flop pairs used:   5784
+   Number with an unused Flip Flop:    1604  out of   5784    27%  
+   Number with an unused LUT:          2834  out of   5784    48%  
+   Number of fully used LUT-FF pairs:  1346  out of   5784    23%  
    Number of unique control sets:       925
 
 IO Utilization: 
@@ -4131,7 +4133,7 @@ Clock Information:
 --------------------------------------------------------------------------+------------------------------------------------------------+-------+
 Clock Signal                                                              | Clock buffer(FF name)                                      | Load  |
 --------------------------------------------------------------------------+------------------------------------------------------------+-------+
-pci_clk                                                                   | IBUFG+BUFG                                                 | 3805  |
+pci_clk                                                                   | IBUFG+BUFG                                                 | 3811  |
 pci_clk                                                                   | DCM_SP:CLK0                                                | 2     |
 u_icon/U0/U_ICON/I_YES_BSCAN.U_BS/iDRCK_LOCAL                             | BUFG                                                       | 715   |
 u_icon/CONTROL1<13>(u_icon/U0/U_ICON/U_CTRL_OUT/F_NCP[1].F_CMD[9].U_LCE:O)| NONE(*)(u_ila1/U0/I_NO_D.U_ILA/U_STAT/U_DIRTY_LDC)         | 1     |
@@ -4197,7 +4199,7 @@ All values displayed in nanoseconds (ns)
 =========================================================================
 Timing constraint: Default period analysis for Clock 'pci_clk'
   Clock period: 7.161ns (frequency: 139.637MHz)
-  Total number of paths / destination ports: 59530 / 5229
+  Total number of paths / destination ports: 59587 / 5235
 -------------------------------------------------------------------------
 Delay:               7.161ns (Levels of Logic = 5)
   Source:            u_bridge/wb_adr_o_20_1 (FF)
@@ -4348,26 +4350,26 @@ Offset:              1.831ns (Levels of Logic = 1)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'pci_clk'
-  Total number of paths / destination ports: 1674 / 1226
+  Total number of paths / destination ports: 1690 / 1226
 -------------------------------------------------------------------------
-Offset:              4.859ns (Levels of Logic = 4)
-  Source:            gb_master/state_FSM_FFd25 (FF)
+Offset:              4.832ns (Levels of Logic = 4)
+  Source:            gb_master/state_FSM_FFd28 (FF)
   Destination:       gb_master/LOOP[4].u_ologic:OFF_D1 (PAD)
   Source Clock:      pci_clk rising
 
-  Data Path: gb_master/state_FSM_FFd25 to gb_master/LOOP[4].u_ologic:OFF_D1
+  Data Path: gb_master/state_FSM_FFd28 to gb_master/LOOP[4].u_ologic:OFF_D1
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               9   0.447   1.174  gb_master/state_FSM_FFd25 (gb_master/state_FSM_FFd25)
+     FD:C->Q               8   0.447   1.147  gb_master/state_FSM_FFd28 (gb_master/state_FSM_FFd28)
      LUT5:I0->O            1   0.203   0.580  gb_master/glitcbus_data_out_mux<12>1 (gb_master/glitcbus_data_out_mux<12>)
      LUT6:I5->O            1   0.205   0.580  gb_master/glitcbus_data_out_mux<12>2 (gb_master/glitcbus_data_out_mux<12>1)
      LUT6:I5->O            1   0.205   0.684  gb_master/glitcbus_data_out_mux<12>3 (gb_master/glitcbus_data_out_mux<12>2)
      LUT6:I4->O            1   0.203   0.579  gb_master/glitcbus_data_out_mux<12>6 (gb_master/glitcbus_data_out_mux<4>)
     glitcbus_ologic:OFF_D1        0.000          gb_master/LOOP[4].u_ologic
     ----------------------------------------
-    Total                      4.859ns (1.263ns logic, 3.596ns route)
-                                       (26.0% logic, 74.0% route)
+    Total                      4.832ns (1.263ns logic, 3.569ns route)
+                                       (26.1% logic, 73.9% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'u_icon/U0/U_ICON/I_YES_BSCAN.U_BS/iDRCK_LOCAL'
@@ -4779,14 +4781,14 @@ u_icon/U0/iUPDATE_OUT|    1.984|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 55.00 secs
-Total CPU time to Xst completion: 55.60 secs
+Total REAL time to Xst completion: 57.00 secs
+Total CPU time to Xst completion: 56.76 secs
  
 --> 
 
-Total memory usage is 324480 kilobytes
+Total memory usage is 324408 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings : 1503 (   0 filtered)
-Number of infos    :   45 (   0 filtered)
+Number of infos    :   43 (   0 filtered)
 

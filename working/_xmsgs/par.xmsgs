@@ -5,10 +5,22 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="ConstraintSystem" num="0" >The Offset constraint &lt;TIMEGRP &quot;PCI_GROUP&quot; OFFSET = IN 7 ns BEFORE COMP &quot;pci_clk&quot; &quot;RISING&quot;;&gt; [TISC.pcf(5172)], is specified without a duration.  This will result in a lack of hold time checks in timing reports.  If hold time checks are desired a duration value should be specified following the &apos;VALID&apos; keyword.
+<msg type="warning" file="ConstraintSystem" num="0" >The Offset constraint &lt;TIMEGRP &quot;PCI_GROUP&quot; OFFSET = IN 7 ns BEFORE COMP &quot;pci_clk&quot; &quot;RISING&quot;;&gt; [TISC.pcf(5175)], is specified without a duration.  This will result in a lack of hold time checks in timing reports.  If hold time checks are desired a duration value should be specified following the &apos;VALID&apos; keyword.
 </msg>
 
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">MISO_IBUF</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[66].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
 </msg>
 
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[41].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
@@ -17,7 +29,16 @@
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[40].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
 </msg>
 
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[70].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
+</msg>
+
+<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
 </msg>
 
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/UPDATE&lt;1&gt;</arg> has no load.  PAR will not attempt to route this signal.
@@ -42,27 +63,6 @@
 </msg>
 
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/UPDATE&lt;6&gt;</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[66].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
-</msg>
-
-<msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_SYNC_OUT[70].SYNC_OUT_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.
 </msg>
 
 <msg type="warning" file="Par" num="288" delta="old" >The signal <arg fmt="%s" index="1">u_vio/U0/I_VIO/GEN_UPDATE_OUT[143].UPDATE_CELL/out_temp</arg> has no load.  PAR will not attempt to route this signal.

@@ -7,7 +7,7 @@ C:\Xilinx\14.7\ISE_DS\ISE\.
 speed -3
 Opened constraints file TISC.pcf.
 
-Mon Mar 30 14:19:20 2015
+Mon Mar 30 16:56:53 2015
 
 C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\bitgen.exe -filter C:/Users/Ryan/Documents/GitHub/firmware-tisc/par/iseconfig/filter.filter -intstyle ise -w -g DebugBitstream:No -g Binary:no -g CRC:Enable -g Reset_on_err:No -g ConfigRate:2 -g ProgPin:PullUp -g TckPin:PullUp -g TdiPin:PullUp -g TdoPin:PullUp -g TmsPin:PullUp -g UnusedPin:PullNone -g UserID:0xFFFFFFFF -g ExtMasterCclk_en:No -g SPI_buswidth:1 -g TIMER_CFG:0xFFFF -g multipin_wakeup:No -g StartUpClk:CClk -g DONE_cycle:4 -g GTS_cycle:5 -g GWE_cycle:6 -g LCK_cycle:NoWait -g Security:None -g DonePipe:Yes -g DriveDone:No -g en_sw_gsr:No -g drive_awake:No -g sw_clk:Startupclk -g sw_gwe_cycle:5 -g sw_gts_cycle:4 TISC.ncd 
 
@@ -134,19 +134,22 @@ There were 0 CONFIG constraint(s) processed from TISC.pcf.
 
 
 Running DRC.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<8> is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:372 - Gated clock. Clock net ila0_control<13> is sourced
    by a combinatorial pin. This is not good design practice. Use the CE pin to
    control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<3> is
+WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<12> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<6> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<13> is
+WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<21> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<16> is
+WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<15> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<17> is
@@ -155,35 +158,44 @@ WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<17> is
 WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<19> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<8> is
+WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<28> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<1> is
-   sourced by a combinatorial pin. This is not good design practice. Use the CE
-   pin to control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net u_bridge/wb_dat_i<2> is
    sourced by a combinatorial pin. This is not good design practice. Use the CE
    pin to control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:372 - Gated clock. Clock net ila1_control<13> is sourced
    by a combinatorial pin. This is not good design practice. Use the CE pin to
    control the loading of data into the flip-flop.
 WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp> is incomplete. The
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp> is incomplete. The
    signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_UPDATE_OUT[143].UPDATE_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[40].SYNC_OUT_CELL/out_temp> is incomplete. The
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp> is incomplete. The
    signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:367 - The signal
    <u_vio/U0/I_VIO/GEN_SYNC_OUT[66].SYNC_OUT_CELL/out_temp> is incomplete. The
    signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[65].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[41].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[40].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[67].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
    <u_vio/U0/I_VIO/GEN_SYNC_OUT[70].SYNC_OUT_CELL/out_temp> is incomplete. The
+   signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal
+   <u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp> is incomplete. The
    signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:367 - The signal <u_vio/U0/I_VIO/UPDATE<1>> is
    incomplete. The signal does not drive any load pins in the design.
@@ -202,19 +214,7 @@ WARNING:PhysDesignRules:367 - The signal <u_vio/U0/I_VIO/UPDATE<7>> is
 WARNING:PhysDesignRules:367 - The signal <u_vio/U0/I_VIO/UPDATE<6>> is
    incomplete. The signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[68].SYNC_OUT_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[64].SYNC_OUT_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[41].SYNC_OUT_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[71].SYNC_OUT_CELL/out_temp> is incomplete. The
-   signal does not drive any load pins in the design.
-WARNING:PhysDesignRules:367 - The signal
-   <u_vio/U0/I_VIO/GEN_SYNC_OUT[69].SYNC_OUT_CELL/out_temp> is incomplete. The
+   <u_vio/U0/I_VIO/GEN_UPDATE_OUT[143].UPDATE_CELL/out_temp> is incomplete. The
    signal does not drive any load pins in the design.
 WARNING:PhysDesignRules:774 - Unexpected DCM configuration. CLKOUT_PHASE_SHIFT
    is not configured VARIABLE for comp gb_master/u_clkgen/u_dcm. The PSEN pin is
