@@ -163,7 +163,7 @@ module glitcbus_master_v2(
 	//% GLITCBUS transaction. Byte 0 read phase.
 	localparam [FSM_BITS-1:0] GB_READ_BYTE0 = 30;
 	//% GLITCBUS transaction. Completion (ack).
-	localparam [FSM_BITS-1:0] CONFIG_DONE = 31;
+	localparam [FSM_BITS-1:0] DONE = 31;
 	//% State variable.
 	reg [FSM_BITS-1:0] state = IDLE;
 	
@@ -187,19 +187,19 @@ module glitcbus_master_v2(
 				CONFIG_READ_BYTE_3: state <= CONFIG_READ_BYTE_2;
 				CONFIG_READ_BYTE_2: state <= CONFIG_READ_BYTE_1;
 				CONFIG_READ_BYTE_1: state <= CONFIG_READ_BYTE_0;
-				CONFIG_READ_BYTE_0: state <= CONFIG_DONE;			
+				CONFIG_READ_BYTE_0: state <= DONE;			
 				CONFIG_WRITE_BYTE_3: state <= CONFIG_WRITE_BYTE_2;
 				CONFIG_WRITE_BYTE_2: state <= CONFIG_WRITE_BYTE_1;
 				CONFIG_WRITE_BYTE_1: state <= CONFIG_WRITE_BYTE_0;
-				CONFIG_WRITE_BYTE_0: state <= CONFIG_DONE;
-				CONFIG_DONE: state <= IDLE;
+				CONFIG_WRITE_BYTE_0: state <= DONE;
+				DONE: state <= IDLE;
 				GB_SEL_WRITE: state <= GB_WRITE_ADDRH;
 				GB_WRITE_ADDRH: state <= GB_WRITE_ADDRL;
 				GB_WRITE_ADDRL: state <= GB_WRITE_BYTE3;
 				GB_WRITE_BYTE3: state <= GB_WRITE_BYTE2;
 				GB_WRITE_BYTE2: state <= GB_WRITE_BYTE1;
 				GB_WRITE_BYTE1: state <= GB_WRITE_BYTE0;
-				GB_WRITE_BYTE0: state <= IDLE;
+				GB_WRITE_BYTE0: state <= DONE;
 				GB_SEL_READ: state <= GB_READ_ADDRH;
 				GB_READ_ADDRH: state <= GB_READ_ADDRL;
 				GB_READ_ADDRL: state <= GB_READ_WAIT1;
@@ -208,7 +208,7 @@ module glitcbus_master_v2(
 				GB_READ_BYTE3: state <= GB_READ_BYTE2;
 				GB_READ_BYTE2: state <= GB_READ_BYTE1;
 				GB_READ_BYTE1: state <= GB_READ_BYTE0;
-				GB_READ_BYTE0: state <= IDLE;
+				GB_READ_BYTE0: state <= DONE;
 			endcase
 		end
 	end
@@ -261,7 +261,7 @@ module glitcbus_master_v2(
 	wire sel_b_input = (state == IDLE || state == CONFIG_RDWR_B ||
 								state == CONFIG_WRITE_BYTE_0 ||
 								state == CONFIG_READ_BYTE_0 ||
-								state == CONFIG_DONE ||
+								state == DONE ||
 								state == GB_WRITE_BYTE0 ||
 								state == GB_READ_BYTE1 ||
 								state == GB_READ_BYTE0);
@@ -269,7 +269,7 @@ module glitcbus_master_v2(
 	integer gsel_i;
 
 	always @(posedge clk_i) begin
-		ack <= ((state == CONFIG_DONE) || (state == GB_READ_BYTE0) || (state == GB_WRITE_BYTE0)) && clock_enable;
+		ack <= ((state == CONFIG_WRITE_BYTE_0) || (state == CONFIG_READ_BYTE_0) || (state == GB_READ_BYTE0) || (state == GB_WRITE_BYTE0)) && clock_enable;
 		for (gsel_i=0;gsel_i<4;gsel_i=gsel_i+1) begin
 			gsel_enable_b[gsel_i] <= !(glitc_sel == gsel_i);
 			if (clock_enable)	begin
@@ -283,7 +283,7 @@ module glitcbus_master_v2(
 			grdwr_b_out_debug <= rdwr_b_input;
 			gad_oe_b_debug <= oe_b_input;
 			gad_out_debug <= glitcbus_data_out_mux;
-			
+			if (state == CONFIG_READ_BYTE_0 || state == GB_READ_BYTE0) glitcbus_data_in[7:0] <= gad_q;
 			if (state == CONFIG_READ_BYTE_1 || state == GB_READ_BYTE1) glitcbus_data_in[15:8] <= gad_q;
 			if (state == CONFIG_READ_BYTE_2 || state == GB_READ_BYTE2) glitcbus_data_in[23:16] <= gad_q;
 			if (state == CONFIG_READ_BYTE_3 || state == GB_READ_BYTE3) glitcbus_data_in[31:24] <= gad_q;
@@ -358,9 +358,10 @@ module glitcbus_master_v2(
 	
 
 	assign ack_o = ack;
-	assign dat_o = {glitcbus_data_in[31:8],gad_q};
+	assign dat_o = glitcbus_data_in;
 	assign err_o = 0;
 	assign rty_o = 0;
 	assign debug_o[4:0] = state_delayed;
 	assign debug_o[5] = gad_oe_b_debug_delayed;
+	assign debug_o[6] = ack;
 endmodule

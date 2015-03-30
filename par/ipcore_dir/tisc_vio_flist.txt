@@ -1,0 +1,18 @@
+# Output products list for <tisc_vio>
+_xmsgs\pn_parser.xmsgs
+tisc_vio.asy
+tisc_vio.cdc
+tisc_vio.constraints\tisc_vio.ucf
+tisc_vio.constraints\tisc_vio.xdc
+tisc_vio.gise
+tisc_vio.ngc
+tisc_vio.sym
+tisc_vio.ucf
+tisc_vio.v
+tisc_vio.veo
+tisc_vio.xco
+tisc_vio.xdc
+tisc_vio.xise
+tisc_vio_flist.txt
+tisc_vio_readme.txt
+tisc_vio_xmdf.tcl

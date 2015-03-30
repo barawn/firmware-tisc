@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="info" file="NgdBuild" num="1317" delta="old" >Using core <arg fmt="%s" index="1">chipscope_ila_v1</arg> requires a ChipScopePro license.  The following blocks are instances of core <arg fmt="%s" index="2">chipscope_ila_v1</arg>:
+</msg>
+
+<msg type="info" file="NgdBuild" num="1317" delta="old" >Using core <arg fmt="%s" index="1">chipscope_vio_v1</arg> requires a ChipScopePro license.  The following blocks are instances of core <arg fmt="%s" index="2">chipscope_vio_v1</arg>:
+</msg>
+
+<msg type="info" file="ConstraintSystem" num="178" delta="old" ><arg fmt="%s" index="1">TNM</arg> &apos;<arg fmt="%s" index="2">PCLK</arg>&apos;, used in period specification &apos;<arg fmt="%s" index="3">TS_PCLK</arg>&apos;, was traced into <arg fmt="%s" index="4">DCM_SP</arg> instance <arg fmt="%s" index="5">gb_master/u_clkgen/u_dcm</arg>. The following new TNM groups and period specifications were generated at the <arg fmt="%s" index="6">DCM_SP</arg> output(s): 
+<arg fmt="%s" index="7">CLK0</arg>: <arg fmt="%s" index="8">&lt;TIMESPEC TS_gb_master_u_clkgen_shifted_clk_for_gclk = PERIOD &quot;gb_master_u_clkgen_shifted_clk_for_gclk&quot; TS_PCLK PHASE -10.546875 ns HIGH 50%&gt;</arg>
+</msg>
+
+<msg type="warning" file="ConstraintSystem" num="0" >The Offset constraint &lt;TIMEGRP &quot;PCI_GROUP&quot; OFFSET = IN 7 ns BEFORE &quot;pci_clk&quot; RISING;&gt; [C:/Users/Ryan/Documents/GitHub/firmware-tisc/par/TISC.ucf(56)], is specified without a duration.  This will result in a lack of hold time checks in timing reports.  If hold time checks are desired a duration value should be specified following the &apos;VALID&apos; keyword.
+</msg>
+
+<msg type="info" file="NgdBuild" num="1222" delta="old" >Setting <arg fmt="%s" index="1">CLKIN_PERIOD</arg> attribute associated with <arg fmt="%s" index="2">DCM</arg> instance <arg fmt="%s" index="3">gb_master/u_clkgen/u_dcm</arg> to <arg fmt="%s" index="4">30.000000</arg> ns based on the period specification (<arg fmt="%s" index="5">&lt;TIMESPEC &quot;TS_PCLK&quot; = PERIOD &quot;PCLK&quot; 30 ns HIGH 50%;&gt; [C:/Users/Ryan/Documents/GitHub/firmware-tisc/par/TISC.ucf(2)]</arg>).
+</msg>
+
+</messages>
+

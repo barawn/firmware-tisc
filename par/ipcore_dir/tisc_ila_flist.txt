@@ -1,0 +1,19 @@
+# Output products list for <tisc_ila>
+_xmsgs\pn_parser.xmsgs
+tisc_ila.asy
+tisc_ila.cdc
+tisc_ila.constraints\tisc_ila.ucf
+tisc_ila.constraints\tisc_ila.xdc
+tisc_ila.gise
+tisc_ila.ncf
+tisc_ila.ngc
+tisc_ila.sym
+tisc_ila.ucf
+tisc_ila.v
+tisc_ila.veo
+tisc_ila.xco
+tisc_ila.xdc
+tisc_ila.xise
+tisc_ila_flist.txt
+tisc_ila_readme.txt
+tisc_ila_xmdf.tcl

@@ -64,7 +64,7 @@ module TISC(
 	localparam [7:0] VER_DAY = 8'd30;
 	localparam [3:0] VER_MAJOR = 4'd1;
 	localparam [3:0] VER_MINOR = 4'd1;
-	localparam [7:0] VER_REV = 8'd2;
+	localparam [7:0] VER_REV = 8'd3;
 	localparam [31:0] VERSION = {VER_BOARD,VER_MONTH,VER_DAY,VER_MAJOR,VER_MINOR,VER_REV}; 
 
 	// WISHBONE master busses.
