@@ -1,8 +1,0 @@
-INTSTYLE=impact
-INFILE=C:\Users\Ryan\Documents\GitHub\firmware-tisc\impact.xsl
-OUTFILE=C:\Users\Ryan\Documents\GitHub\firmware-tisc\impact.xsl
-FAMILY=Multiple
-PART=Multiple
-WORKINGDIR=C:\Users\Ryan\Documents\GitHub\firmware-tisc
-LICENSE=iMPACT
-USER_INFO=iMPACT
