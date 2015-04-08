@@ -60,11 +60,11 @@ module TISC(
 	localparam [31:0] CPCI_IDENT = "TSC1";
 	// Firmware version.
 	localparam [3:0] VER_BOARD = 4'h0;
-	localparam [3:0] VER_MONTH = 4'd3;
-	localparam [7:0] VER_DAY = 8'd30;
+	localparam [3:0] VER_MONTH = 4'd4;
+	localparam [7:0] VER_DAY = 8'd2;
 	localparam [3:0] VER_MAJOR = 4'd1;
 	localparam [3:0] VER_MINOR = 4'd1;
-	localparam [7:0] VER_REV = 8'd3;
+	localparam [7:0] VER_REV = 8'd4;
 	localparam [31:0] VERSION = {VER_BOARD,VER_MONTH,VER_DAY,VER_MAJOR,VER_MINOR,VER_REV}; 
 
 	// WISHBONE master busses.
@@ -197,15 +197,34 @@ module TISC(
 	wire [35:0] ila0_control;
 	wire [35:0] ila1_control;
 	wire [35:0] vio_control;
-	wire [7:0] global_debug;
-	wire [63:0] vio_sync_in;
-	wire [47:0] vio_sync_out;
 
-	wire [31:0] bridge_dat_o = vio_sync_in[0 +: 32];
-	wire [20:0] bridge_adr_o = vio_sync_in[32 +: 21];
-	wire bridge_we_o = vio_sync_in[53];
-	wire bridge_go_o = vio_sync_in[54];
-	wire bridge_lock_o = vio_sync_in[55];
+	/// WISHBONE VIO Bridge.
+	/// NOTE NOTE NOTE:
+	/// This is changed from other implementations, because
+	/// sync inputs/outputs are RIDICULOUSLY expensive.
+	/// In fact at some point a JTAG-only bridge using a
+	/// TCL-type interface might be more useful.
+	
+	/// Only 'go' is a sync input. All others are async.
+	wire [7:0] vio_sync_in;
+	/// We need 32 + 21 + 2 = 55 inputs.
+	wire [54:0] vio_async_in;
+	/// We need 34 outputs. All are async.
+	wire [33:0] vio_async_out;
+
+	wire [31:0] bridge_dat_o = vio_async_in[0 +: 32];
+	wire [20:0] bridge_adr_o = vio_async_in[32 +: 21];
+	wire bridge_we_o = vio_async_in[53];
+	wire bridge_lock_o = vio_async_in[54];
+
+	wire bridge_go_o = vio_sync_in[0];
+
+	wire [31:0] bridge_dat_i;
+	wire bridge_done_i;
+	wire bridge_err_i;
+	assign vio_async_out[0 +: 32] = bridge_dat_i;
+	assign vio_async_out[32] = bridge_done_i;
+	assign vio_async_out[33] = bridge_err_i;
 
   reg [31:0] pci_debug_data = {32{1'b0}};
   reg [20:0] pci_debug_adr = {21{1'b0}};
@@ -241,15 +260,6 @@ module TISC(
   assign pci_debug[61] = pci_debug_err;
   assign pci_debug[62] = pci_debug_rty;
 
-
-	wire [31:0] bridge_dat_i;
-	wire bridge_done_i;
-	wire bridge_err_i;
-	assign vio_sync_out[0 +: 32] = bridge_dat_i;
-	assign vio_sync_out[32] = bridge_done_i;
-	assign vio_sync_out[33] = bridge_err_i;
-
-
 	wbvio_bridge u_bridge(.clk_i(wb_clk),.rst_i(1'b0),
 		.wbvio_dat_i(bridge_dat_o),
 		.wbvio_adr_i(bridge_adr_o),
@@ -274,7 +284,7 @@ module TISC(
 	tisc_icon u_icon(.CONTROL0(ila0_control),.CONTROL1(ila1_control),.CONTROL2(vio_control));
 	tisc_ila u_ila0(.CONTROL(ila0_control),.CLK(wb_clk),.TRIG0(pci_debug));
 	tisc_ila u_ila1(.CONTROL(ila1_control),.CLK(wb_clk),.TRIG0(gb_debug));
-	tisc_vio u_vio(.CONTROL(vio_control),.CLK(wb_clk),.SYNC_IN(vio_sync_out),.SYNC_OUT(vio_sync_in),.ASYNC_OUT(global_debug));
+	tisc_vio u_vio(.CONTROL(vio_control),.CLK(wb_clk),.SYNC_OUT(vio_sync_in),.ASYNC_IN(vio_async_out),.ASYNC_OUT(vio_async_in));
 
 	assign MON[1] = 1'b0;
 	assign MON[2] = 1'b0;
@@ -336,7 +346,7 @@ module tisc_identification(
 		end
 	end
 
-	simple_spi_top u_spi(.clk_i(clk_i),.rst_i(rst_i),
+	simple_spi_top u_spi(.clk_i(clk_i),.rst_i(!rst_i),
 								.cyc_i(oc_spi_cyc),.stb_i(stb_i),
 								.adr_i(adr_i[3:2]),.we_i(we_i),
 								.dat_i(dat_i[7:0]),.dat_o(oc_spi_dat_out),
